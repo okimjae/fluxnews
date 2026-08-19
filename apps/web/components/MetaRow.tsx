@@ -3,9 +3,16 @@ interface MetaRowProps {
   publishedAt: Date;
   readTimeMinutes?: number;
   light?: boolean;
+  compact?: boolean;
 }
 
-export function MetaRow({ author, publishedAt, readTimeMinutes = 4, light = false }: MetaRowProps) {
+export function MetaRow({
+  author,
+  publishedAt,
+  readTimeMinutes = 4,
+  light = false,
+  compact = false,
+}: MetaRowProps) {
   const date = publishedAt.toLocaleDateString('pt-BR', {
     day: '2-digit',
     month: 'short',
@@ -22,7 +29,9 @@ export function MetaRow({ author, publishedAt, readTimeMinutes = 4, light = fals
       <span className={`text-[0.65rem] ${textCls}`}>·</span>
       <span className={`font-mono text-[0.75rem] ${textCls}`}>{date}</span>
       <span className={`text-[0.65rem] ${textCls}`}>·</span>
-      <span className={`font-mono text-[0.75rem] ${textCls}`}>{readTimeMinutes} min</span>
+      {!compact && (
+        <span className={`font-mono text-[0.75rem] ${textCls}`}>{readTimeMinutes} min</span>
+      )}
     </div>
   );
 }

@@ -11,21 +11,23 @@ interface Post {
 
 interface ArticleCardProps {
   post: Post;
-  variant: 'hero' | 'card';
+  variant: 'hero' | 'card' | 'secondary';
+  index?: number;
 }
 
-export function ArticleCard({ post, variant }: ArticleCardProps) {
+export function ArticleCard({ post, variant, index }: ArticleCardProps) {
   const href = post.slug ? `/artigo/${post.slug}` : '#';
-  if (variant === 'hero') return <HeroArticle post={post} href={href} />;
+  if (variant === 'hero') return <HeroArticle post={post} href={href} index={index ?? 1} />;
+  if (variant === 'secondary') return <SecondaryCard post={post} href={href} />;
   return <GridCard post={post} href={href} />;
 }
 
-function HeroArticle({ post, href }: { post: Post; href: string }) {
+function HeroArticle({ post, href, index }: { post: Post; href: string; index: number }) {
+  const num = String(index).padStart(2, '0');
   return (
     <a href={href} className="group block no-underline">
       <div className="hero-card grid lg:grid-cols-[3fr_2fr] border border-border rounded-card overflow-hidden bg-surface">
-        {/* Editorial content */}
-        <div className="p-8 sm:p-10 lg:p-14 flex flex-col gap-6 justify-center min-h-[360px]">
+        <div className="p-8 sm:p-10 lg:p-14 flex flex-col gap-6 justify-center min-h-[280px] lg:min-h-[360px]">
           <span className="badge self-start">{post.category}</span>
 
           <h1 className="font-display text-hero text-text text-balance leading-[1.08]">
@@ -44,12 +46,28 @@ function HeroArticle({ post, href }: { post: Post; href: string }) {
           </div>
         </div>
 
-        {/* Abstract visual — dot grid + decorative number */}
         <div className="img-dot-grid hidden lg:flex items-end justify-end p-8 min-h-[360px]">
           <span className="article-number" aria-hidden="true">
-            01
+            {num}
           </span>
         </div>
+      </div>
+    </a>
+  );
+}
+
+function SecondaryCard({ post, href }: { post: Post; href: string }) {
+  return (
+    <a href={href} className="secondary-card no-underline group">
+      {/* Dot-grid thumbnail */}
+      <div className="img-dot-grid shrink-0 w-[72px] h-[72px] rounded-sm" aria-hidden="true" />
+
+      <div className="flex-1 min-w-0">
+        <span className="badge mb-2 inline-flex">{post.category}</span>
+        <h3 className="secondary-card-title text-[0.9375rem] font-semibold text-text leading-[1.35] line-clamp-2 mb-2">
+          {post.title}
+        </h3>
+        <MetaRow author={post.author} publishedAt={post.publishedAt} readTimeMinutes={4} compact />
       </div>
     </a>
   );
