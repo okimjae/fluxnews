@@ -1,4 +1,4 @@
-import type { TenantSlug, TenantConfig } from '@fluxnews/config';
+import type { TenantConfig, TenantSlug } from '@fluxnews/config';
 import { ArticleCard } from './ArticleCard';
 
 interface Post {
@@ -36,19 +36,36 @@ export function ArticleFeed({ posts, config }: ArticleFeedProps) {
             gap: '1.25rem',
           }}
         >
-          {rest.map((post, i) => (
-            <ArticleCard key={i} post={post} variant="card" />
+          {rest.map((post) => (
+            <ArticleCard key={post.slug ?? post.title} post={post} variant="card" />
           ))}
         </div>
       )}
 
       {/* Section label */}
-      <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid var(--color-border)' }}>
-        <p style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.09em', color: 'var(--color-accent)', marginBottom: '0.25rem', transition: 'color 250ms' }}>
+      <div
+        style={{
+          marginTop: '3rem',
+          paddingTop: '2rem',
+          borderTop: '1px solid var(--color-border)',
+        }}
+      >
+        <p
+          style={{
+            fontSize: '0.75rem',
+            fontWeight: 600,
+            textTransform: 'uppercase',
+            letterSpacing: '0.09em',
+            color: 'var(--color-accent)',
+            marginBottom: '0.25rem',
+            transition: 'color 250ms',
+          }}
+        >
           {config.niche}
         </p>
         <p style={{ fontSize: '0.875rem', color: 'var(--color-text-m)' }}>
-          Conteúdo gerado automaticamente por agentes de IA e revisado editorialmente · por {config.author.name}
+          Conteúdo gerado automaticamente por agentes de IA e revisado editorialmente · por{' '}
+          {config.author.name}
         </p>
       </div>
     </div>

@@ -1,9 +1,9 @@
+import type { TenantSlug } from '@fluxnews/config';
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
-import type { TenantSlug } from '@fluxnews/config';
-import { getTenantConfig } from '@/tenants';
-import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { Header } from '@/components/Header';
+import { getTenantConfig } from '@/tenants';
 import './globals.css';
 
 export async function generateMetadata(): Promise<Metadata> {

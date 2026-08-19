@@ -25,7 +25,14 @@ function HeroArticle({ post, href }: { post: Post; href: string }) {
   return (
     <a
       href={href}
-      style={{ display: 'block', textDecoration: 'none', borderRadius: 10, overflow: 'hidden', position: 'relative', border: '1px solid var(--color-border)' }}
+      style={{
+        display: 'block',
+        textDecoration: 'none',
+        borderRadius: 10,
+        overflow: 'hidden',
+        position: 'relative',
+        border: '1px solid var(--color-border)',
+      }}
       className="hero-card"
     >
       {/* Image placeholder — replaced by real image once pipeline is live */}
@@ -48,13 +55,30 @@ function HeroArticle({ post, href }: { post: Post; href: string }) {
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.3) 55%, transparent 100%)',
+            background:
+              'linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.3) 55%, transparent 100%)',
           }}
         />
 
         {/* Content */}
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: 'clamp(1.25rem, 4%, 2rem)' }}>
-          <div className="badge" style={{ marginBottom: '0.75rem', background: 'color-mix(in srgb, var(--color-accent) 18%, rgba(255,255,255,0.08))', color: '#fff', borderColor: 'rgba(255,255,255,0.2)' }}>
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            padding: 'clamp(1.25rem, 4%, 2rem)',
+          }}
+        >
+          <div
+            className="badge"
+            style={{
+              marginBottom: '0.75rem',
+              background: 'color-mix(in srgb, var(--color-accent) 18%, rgba(255,255,255,0.08))',
+              color: '#fff',
+              borderColor: 'rgba(255,255,255,0.2)',
+            }}
+          >
             {post.category}
           </div>
 
@@ -108,7 +132,8 @@ function GridCard({ post, href }: { post: Post; href: string }) {
       onMouseEnter={(e) => {
         (e.currentTarget as HTMLElement).style.transform = 'translateY(-3px)';
         (e.currentTarget as HTMLElement).style.boxShadow = 'var(--card-hover-shadow)';
-        (e.currentTarget as HTMLElement).style.borderColor = 'color-mix(in srgb, var(--color-accent) 40%, var(--color-border))';
+        (e.currentTarget as HTMLElement).style.borderColor =
+          'color-mix(in srgb, var(--color-accent) 40%, var(--color-border))';
       }}
       onMouseLeave={(e) => {
         (e.currentTarget as HTMLElement).style.transform = '';
@@ -130,7 +155,14 @@ function GridCard({ post, href }: { post: Post; href: string }) {
         }}
       >
         <div style={{ position: 'absolute', top: '0.625rem', left: '0.625rem' }}>
-          <span className="badge" style={{ background: 'color-mix(in srgb, var(--color-accent) 18%, rgba(255,255,255,0.08))', color: '#fff', borderColor: 'rgba(255,255,255,0.2)' }}>
+          <span
+            className="badge"
+            style={{
+              background: 'color-mix(in srgb, var(--color-accent) 18%, rgba(255,255,255,0.08))',
+              color: '#fff',
+              borderColor: 'rgba(255,255,255,0.2)',
+            }}
+          >
             {post.category}
           </span>
         </div>

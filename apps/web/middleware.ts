@@ -1,5 +1,5 @@
-import { type NextRequest, NextResponse } from 'next/server';
 import type { TenantSlug } from '@fluxnews/config';
+import { type NextRequest, NextResponse } from 'next/server';
 
 const DOMAIN_MAP: Record<string, TenantSlug> = {
   'criptosignal.com.br': 'cripto',

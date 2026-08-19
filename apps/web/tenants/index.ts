@@ -1,4 +1,4 @@
-import type { TenantSlug, TenantConfig } from '@fluxnews/config';
+import type { TenantConfig, TenantSlug } from '@fluxnews/config';
 
 const configs: Record<TenantSlug, TenantConfig> = {
   cripto: {
@@ -8,7 +8,8 @@ const configs: Record<TenantSlug, TenantConfig> = {
     accent: '#F7931A',
     onAccent: '#000000',
     niche: 'Crypto & Web3',
-    voice: 'Analytical and data-driven. No hype, no "to the moon." Every claim backed by on-chain data.',
+    voice:
+      'Analytical and data-driven. No hype, no "to the moon." Every claim backed by on-chain data.',
     primaryLang: 'pt',
     affiliates: ['binance', 'ledger', 'coinbase', 'mercado-bitcoin'],
     rssSources: [
@@ -53,7 +54,8 @@ const configs: Record<TenantSlug, TenantConfig> = {
     accent: '#6366F1',
     onAccent: '#FFFFFF',
     niche: 'AI & Technology',
-    voice: 'Curious, forward-thinking, explains complex things simply. Not a press release repeater.',
+    voice:
+      'Curious, forward-thinking, explains complex things simply. Not a press release repeater.',
     primaryLang: 'en',
     affiliates: ['hostinger', 'digitalocean', 'udemy'],
     rssSources: [
@@ -62,7 +64,14 @@ const configs: Record<TenantSlug, TenantConfig> = {
       'https://www.wired.com/feed/rss',
       'https://feeds.arstechnica.com/arstechnica/index',
     ],
-    newsApiKeywords: ['artificial intelligence', 'AI', 'machine learning', 'startup', 'tech', 'OpenAI'],
+    newsApiKeywords: [
+      'artificial intelligence',
+      'AI',
+      'machine learning',
+      'startup',
+      'tech',
+      'OpenAI',
+    ],
     author: {
       name: 'Rafael Santos',
       title: 'Software Engineer & AI Researcher',
@@ -98,7 +107,8 @@ const configs: Record<TenantSlug, TenantConfig> = {
     accent: '#E040FB',
     onAccent: '#000000',
     niche: 'Games & Culture',
-    voice: 'Enthusiastic, opinionated, in-community tone. Has taste. Not afraid to call out lazy sequels.',
+    voice:
+      'Enthusiastic, opinionated, in-community tone. Has taste. Not afraid to call out lazy sequels.',
     primaryLang: 'pt',
     affiliates: ['nuuvem', 'amazon-games'],
     rssSources: [
@@ -107,7 +117,15 @@ const configs: Record<TenantSlug, TenantConfig> = {
       'https://www.rockpapershotgun.com/feed',
       'https://blog.playstation.com/feed/',
     ],
-    newsApiKeywords: ['video games', 'gaming', 'PlayStation', 'Xbox', 'Nintendo', 'Steam', 'esports'],
+    newsApiKeywords: [
+      'video games',
+      'gaming',
+      'PlayStation',
+      'Xbox',
+      'Nintendo',
+      'Steam',
+      'esports',
+    ],
     author: {
       name: 'Pedro Alves',
       title: 'Editor de Games',
@@ -143,7 +161,8 @@ const configs: Record<TenantSlug, TenantConfig> = {
     accent: '#FF3B30',
     onAccent: '#FFFFFF',
     niche: 'Filmes & Séries',
-    voice: 'Entertaining, culturally literate, has an opinion. Writes as a critic, not a PR pipeline.',
+    voice:
+      'Entertaining, culturally literate, has an opinion. Writes as a critic, not a PR pipeline.',
     primaryLang: 'pt',
     affiliates: ['amazon-prime', 'apple-tv'],
     rssSources: [
@@ -165,7 +184,8 @@ const configs: Record<TenantSlug, TenantConfig> = {
     accent: '#00B4D8',
     onAccent: '#000000',
     niche: 'Carros & EVs',
-    voice: 'Technical but accessible, pragmatic. Covers EVs for the buyer, not just the enthusiast.',
+    voice:
+      'Technical but accessible, pragmatic. Covers EVs for the buyer, not just the enthusiast.',
     primaryLang: 'pt',
     affiliates: ['icarros', 'porto-seguro-auto', 'webmotors'],
     rssSources: [

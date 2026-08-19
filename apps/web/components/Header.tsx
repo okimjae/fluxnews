@@ -58,10 +58,51 @@ export function Header({ tenant }: HeaderProps) {
             marginLeft: 'auto',
           }}
         >
-          <a href="/" style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-text-2)', textDecoration: 'none' }}>Início</a>
-          <a href="/radio" style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-text-2)', textDecoration: 'none' }}>Rádio</a>
-          <a href="/shorts" style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-text-2)', textDecoration: 'none' }}>Shorts</a>
-          <a href="/newsletter" style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-accent)', textDecoration: 'none', transition: 'color 250ms' }}>Newsletter</a>
+          <a
+            href="/"
+            style={{
+              fontSize: '0.875rem',
+              fontWeight: 600,
+              color: 'var(--color-text-2)',
+              textDecoration: 'none',
+            }}
+          >
+            Início
+          </a>
+          <a
+            href="/radio"
+            style={{
+              fontSize: '0.875rem',
+              fontWeight: 600,
+              color: 'var(--color-text-2)',
+              textDecoration: 'none',
+            }}
+          >
+            Rádio
+          </a>
+          <a
+            href="/shorts"
+            style={{
+              fontSize: '0.875rem',
+              fontWeight: 600,
+              color: 'var(--color-text-2)',
+              textDecoration: 'none',
+            }}
+          >
+            Shorts
+          </a>
+          <a
+            href="/newsletter"
+            style={{
+              fontSize: '0.875rem',
+              fontWeight: 600,
+              color: 'var(--color-accent)',
+              textDecoration: 'none',
+              transition: 'color 250ms',
+            }}
+          >
+            Newsletter
+          </a>
         </nav>
       </div>
     </header>

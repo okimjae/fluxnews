@@ -126,6 +126,7 @@ body {
 
 /* ─── MOTION ─────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
+  /* biome-ignore lint/complexity/noImportantStyles: accessibility override must win specificity battles */
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;

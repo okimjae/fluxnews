@@ -30,7 +30,14 @@ export function Footer({ tenant }: FooterProps) {
         }}
       >
         <div>
-          <p style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-text)', marginBottom: '0.25rem' }}>
+          <p
+            style={{
+              fontSize: '0.875rem',
+              fontWeight: 700,
+              color: 'var(--color-text)',
+              marginBottom: '0.25rem',
+            }}
+          >
             {config.name}
           </p>
           <p style={{ fontSize: '0.75rem', color: 'var(--color-text-m)' }}>
@@ -39,14 +46,42 @@ export function Footer({ tenant }: FooterProps) {
         </div>
 
         <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap' }}>
-          <a href="/about" style={{ fontSize: '0.8125rem', color: 'var(--color-text-2)', textDecoration: 'none' }}>Sobre</a>
-          <a href="/editorial-policy" style={{ fontSize: '0.8125rem', color: 'var(--color-text-2)', textDecoration: 'none' }}>Política Editorial</a>
-          <a href="/contact" style={{ fontSize: '0.8125rem', color: 'var(--color-text-2)', textDecoration: 'none' }}>Contato</a>
-          <a href={`/podcast/${tenant}/feed.xml`} style={{ fontSize: '0.8125rem', color: 'var(--color-text-2)', textDecoration: 'none' }}>Podcast RSS</a>
+          <a
+            href="/about"
+            style={{ fontSize: '0.8125rem', color: 'var(--color-text-2)', textDecoration: 'none' }}
+          >
+            Sobre
+          </a>
+          <a
+            href="/editorial-policy"
+            style={{ fontSize: '0.8125rem', color: 'var(--color-text-2)', textDecoration: 'none' }}
+          >
+            Política Editorial
+          </a>
+          <a
+            href="/contact"
+            style={{ fontSize: '0.8125rem', color: 'var(--color-text-2)', textDecoration: 'none' }}
+          >
+            Contato
+          </a>
+          <a
+            href={`/podcast/${tenant}/feed.xml`}
+            style={{ fontSize: '0.8125rem', color: 'var(--color-text-2)', textDecoration: 'none' }}
+          >
+            Podcast RSS
+          </a>
         </div>
 
-        <p style={{ fontSize: '0.75rem', color: 'var(--color-text-m)', width: '100%', marginTop: '0.5rem' }}>
-          © {new Date().getFullYear()} {config.name} · Conteúdo gerado com assistência de IA e curadoria editorial
+        <p
+          style={{
+            fontSize: '0.75rem',
+            color: 'var(--color-text-m)',
+            width: '100%',
+            marginTop: '0.5rem',
+          }}
+        >
+          © {new Date().getFullYear()} {config.name} · Conteúdo gerado com assistência de IA e
+          curadoria editorial
         </p>
       </div>
     </footer>
