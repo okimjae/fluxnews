@@ -17,37 +17,46 @@ interface ArticleFeedProps {
 }
 
 export function ArticleFeed({ posts, config }: ArticleFeedProps) {
-  const [hero, ...rest] = posts;
+  const [hero, second, ...rest] = posts;
   if (!hero) return null;
 
   return (
     <div>
+      {/* Section label */}
+      <div className="flex items-center gap-4 mb-6">
+        <div className="divider-accent flex-1 max-w-[3rem]" />
+        <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.12em] text-accent">
+          {config.niche}
+        </p>
+      </div>
+
       {/* Hero */}
-      <div className="mb-5">
+      <div className="mb-5 animate-fade-up">
         <ArticleCard post={hero} variant="hero" />
       </div>
 
-      {/* 3-column grid */}
-      {rest.length > 0 && (
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-5">
+      {/* Grid — secondary + rest */}
+      {(second || rest.length > 0) && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+          {second && <ArticleCard key={second.slug ?? second.title} post={second} variant="card" />}
           {rest.map((post) => (
             <ArticleCard key={post.slug ?? post.title} post={post} variant="card" />
           ))}
         </div>
       )}
 
-      {/* Section label */}
-      <div className="mt-12 pt-8 border-t border-border">
-        <p
-          className="text-xs font-semibold uppercase tracking-[0.09em] text-accent mb-1"
-          style={{ transition: 'color 250ms' }}
+      {/* Footer attribution */}
+      <div className="mt-12 pt-6 border-t border-border flex items-center justify-between flex-wrap gap-3">
+        <p className="text-[0.75rem] text-text-m">
+          Curado por IA · revisado por{' '}
+          <span className="text-text-2 font-medium">{config.author.name}</span>
+        </p>
+        <a
+          href="/newsletter"
+          className="font-mono text-[0.6875rem] uppercase tracking-[0.1em] text-accent no-underline hover:opacity-70 transition-opacity"
         >
-          {config.niche}
-        </p>
-        <p className="text-sm text-text-m">
-          Conteúdo gerado automaticamente por agentes de IA e revisado editorialmente · por{' '}
-          {config.author.name}
-        </p>
+          Assinar newsletter →
+        </a>
       </div>
     </div>
   );
