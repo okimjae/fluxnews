@@ -29,16 +29,18 @@ Distribution (Telegram, Newsletter, Radio, Shorts, Pinterest)
 
 ## Blogs
 
-| Slug | Niche | Primary Monetization |
-|---|---|---|
-| `cripto` | Crypto & Web3 | Affiliate CPA + Ads |
-| `saude` | Health & Wellness | Affiliate + Ads |
-| `tech` | AI & Technology | Hosting affiliate |
-| `financas` | Personal Finance | Affiliate + Ads |
-| `games` | Games & Culture | Ads volume |
-| `esportes` | Football & Sports | Ads events |
-| `streaming` | Movies & Series | Ads + affiliate |
-| `mobilidade` | Cars & EVs | Affiliate + Ads |
+| Slug | Domain | Niche | Accent | Best Monetization |
+|---|---|---|---|---|
+| `cripto` | criptosignal.com.br | Crypto & Web3 | `#F7931A` | Binance/Ledger CPA |
+| `saude` | saudeplena.net.br | Health & Wellness | `#00A878` | iHerb + Gympass |
+| `tech` | techpulse.com.br | AI & Technology | `#6366F1` | Hostinger + high EN RPM |
+| `financas` | finanzas360.com.br | Personal Finance | `#1E6B4F` | XP/Rico CPA (up to R$400) |
+| `games` | gameverse.com.br | Games & Culture | `#E040FB` | Nuuvem + volume ads |
+| `esportes` | golasso.com.br | Football & Sports | `#E63946` | Event traffic spikes |
+| `streaming` | streamhit.com.br | Movies & Series | `#FF3B30` | Amazon Prime CPA |
+| `mobilidade` | voltaeletrica.com.br | Cars & EVs | `#00B4D8` | Auto insurance leads |
+
+> Full tenant specs (voice, RSS sources, affiliates, author personas, SEO keywords): [docs/tenants.md](docs/tenants.md)
 
 ---
 
@@ -254,6 +256,8 @@ cd agents && python orchestrator.py --tenant cripto --dry-run
 |---|---|
 | [docs/stack.md](docs/stack.md) | Tech stack, versions and justifications |
 | [docs/workflow.md](docs/workflow.md) | TBD branching, Scrum process, PR flow |
+| [docs/tenants.md](docs/tenants.md) | Full spec for all 8 blogs (voice, RSS, affiliates, personas) |
+| [docs/design.md](docs/design.md) | Design system: tokens, typography, components *(coming soon)* |
 | [docs/architecture.md](docs/architecture.md) | Agent pipeline deep dive *(coming soon)* |
 
 ---
