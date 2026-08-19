@@ -120,6 +120,7 @@ function GridCard({ post, href }: { post: Post; href: string }) {
   return (
     <a
       href={href}
+      className="card-link"
       style={{
         display: 'block',
         textDecoration: 'none',
@@ -127,18 +128,6 @@ function GridCard({ post, href }: { post: Post; href: string }) {
         border: '1px solid var(--color-border)',
         borderRadius: 10,
         overflow: 'hidden',
-        transition: 'transform 200ms ease-out, box-shadow 200ms ease-out, border-color 200ms ease',
-      }}
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLElement).style.transform = 'translateY(-3px)';
-        (e.currentTarget as HTMLElement).style.boxShadow = 'var(--card-hover-shadow)';
-        (e.currentTarget as HTMLElement).style.borderColor =
-          'color-mix(in srgb, var(--color-accent) 40%, var(--color-border))';
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLElement).style.transform = '';
-        (e.currentTarget as HTMLElement).style.boxShadow = '';
-        (e.currentTarget as HTMLElement).style.borderColor = '';
       }}
     >
       {/* Image */}
