@@ -1,0 +1,27 @@
+# deps
+node_modules
+.pnp
+.pnp.js
+
+# build
+.next
+dist
+.turbo
+out
+
+# env
+.env
+.env.local
+.env.*.local
+
+# misc
+.DS_Store
+*.log
+.vercel
+
+# python
+__pycache__
+*.pyc
+*.pyo
+.venv
+agents/.python-version
