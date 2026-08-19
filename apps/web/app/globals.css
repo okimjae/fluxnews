@@ -1,7 +1,5 @@
-@import "tailwindcss";
-
-/* ─── FONTS ──────────────────────────────────────────────── */
 @import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap");
+@import "tailwindcss";
 
 /* ─── DESIGN TOKENS ─────────────────────────────────────── */
 @theme {
@@ -122,6 +120,16 @@ body {
 }
 .btn-ghost:hover {
   background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+}
+
+/* ─── CARD HOVER ─────────────────────────────────────────── */
+.card-link {
+  transition: transform 200ms ease-out, box-shadow 200ms ease-out, border-color 200ms ease;
+}
+.card-link:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--card-hover-shadow);
+  border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-border));
 }
 
 /* ─── MOTION ─────────────────────────────────────────────── */
