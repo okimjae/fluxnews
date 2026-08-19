@@ -8,7 +8,8 @@
       "!**/dist",
       "!**/.turbo",
       "!pnpm-lock.yaml",
-      "!**/*.css"
+      "!**/*.css",
+      "!**/next-env.d.ts"
     ]
   },
   "assist": { "actions": { "source": { "organizeImports": "on" } } },
@@ -31,5 +32,17 @@
   "css": {
     "formatter": { "enabled": false },
     "linter": { "enabled": false }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["apps/web/app/artigo/**"],
+      "linter": {
+        "rules": {
+          "security": {
+            "noDangerouslySetInnerHtml": "off"
+          }
+        }
+      }
+    }
+  ]
 }

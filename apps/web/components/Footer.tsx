@@ -9,77 +9,34 @@ export function Footer({ tenant }: FooterProps) {
   const config = getTenantConfig(tenant);
 
   return (
-    <footer
-      style={{
-        borderTop: '1px solid var(--color-border)',
-        background: 'var(--color-surface)',
-        marginTop: '4rem',
-        paddingBlock: '2.5rem',
-      }}
-    >
-      <div
-        style={{
-          maxWidth: '1280px',
-          marginInline: 'auto',
-          paddingInline: 'clamp(1rem, 5vw, 2rem)',
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '1rem',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
+    <footer className="border-t border-border bg-surface mt-16 py-10">
+      <div className="max-w-[1280px] mx-auto px-page flex flex-wrap gap-4 items-center justify-between">
         <div>
-          <p
-            style={{
-              fontSize: '0.875rem',
-              fontWeight: 700,
-              color: 'var(--color-text)',
-              marginBottom: '0.25rem',
-            }}
-          >
-            {config.name}
-          </p>
-          <p style={{ fontSize: '0.75rem', color: 'var(--color-text-m)' }}>
+          <p className="text-sm font-bold text-text mb-1">{config.name}</p>
+          <p className="text-xs text-text-m">
             Notícias sobre {config.niche} com curadoria de IA · {config.domain}
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap' }}>
-          <a
-            href="/about"
-            style={{ fontSize: '0.8125rem', color: 'var(--color-text-2)', textDecoration: 'none' }}
-          >
+        <div className="flex gap-5 flex-wrap">
+          <a href="/about" className="text-[0.8125rem] text-text-2 no-underline">
             Sobre
           </a>
-          <a
-            href="/editorial-policy"
-            style={{ fontSize: '0.8125rem', color: 'var(--color-text-2)', textDecoration: 'none' }}
-          >
+          <a href="/editorial-policy" className="text-[0.8125rem] text-text-2 no-underline">
             Política Editorial
           </a>
-          <a
-            href="/contact"
-            style={{ fontSize: '0.8125rem', color: 'var(--color-text-2)', textDecoration: 'none' }}
-          >
+          <a href="/contact" className="text-[0.8125rem] text-text-2 no-underline">
             Contato
           </a>
           <a
             href={`/podcast/${tenant}/feed.xml`}
-            style={{ fontSize: '0.8125rem', color: 'var(--color-text-2)', textDecoration: 'none' }}
+            className="text-[0.8125rem] text-text-2 no-underline"
           >
             Podcast RSS
           </a>
         </div>
 
-        <p
-          style={{
-            fontSize: '0.75rem',
-            color: 'var(--color-text-m)',
-            width: '100%',
-            marginTop: '0.5rem',
-          }}
-        >
+        <p className="text-xs text-text-m w-full mt-2">
           © {new Date().getFullYear()} {config.name} · Conteúdo gerado com assistência de IA e
           curadoria editorial
         </p>
