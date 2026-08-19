@@ -12,7 +12,7 @@ export default async function HomePage() {
   const placeholderPosts = getPlaceholderPosts(tenant);
 
   return (
-    <div className="max-w-[1280px] mx-auto px-page py-8">
+    <div className="max-page px-page py-12">
       <ArticleFeed posts={placeholderPosts} tenant={tenant} config={config} />
     </div>
   );

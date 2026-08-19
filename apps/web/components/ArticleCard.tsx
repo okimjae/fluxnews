@@ -22,63 +22,53 @@ export function ArticleCard({ post, variant }: ArticleCardProps) {
 
 function HeroArticle({ post, href }: { post: Post; href: string }) {
   return (
-    <a href={href} className="block no-underline group relative rounded-card overflow-hidden">
-      {/* Image / gradient placeholder */}
-      <div className="img-hero aspect-[21/9] w-full relative">
-        {/* Bottom-up gradient overlay */}
-        <div className="hero-overlay absolute inset-0" />
+    <a href={href} className="group block no-underline">
+      <div className="hero-card grid lg:grid-cols-[3fr_2fr] border border-border rounded-card overflow-hidden bg-surface">
+        {/* Editorial content */}
+        <div className="p-8 sm:p-10 lg:p-14 flex flex-col gap-6 justify-center min-h-[360px]">
+          <span className="badge self-start">{post.category}</span>
 
-        {/* Accent edge */}
-        <div className="accent-edge absolute left-0 top-0 bottom-0 w-[3px]" />
-
-        {/* Content overlay */}
-        <div className="absolute bottom-0 left-0 right-0 px-page pb-[clamp(1.5rem,4%,2.5rem)] pt-8">
-          <span className="badge mb-4 inline-flex">{post.category}</span>
-
-          <h1 className="font-display text-hero font-normal text-white mb-3 text-balance">
+          <h1 className="font-display text-hero text-text text-balance leading-[1.08]">
             {post.title}
           </h1>
 
-          <p className="text-[clamp(0.875rem,1.5vw,1rem)] leading-[1.6] mb-5 max-w-[60ch] text-white/65">
+          <p className="font-display italic text-text-2 text-[1.125rem] leading-[1.7] max-w-[52ch]">
             {post.excerpt}
           </p>
 
-          <MetaRow author={post.author} publishedAt={post.publishedAt} light />
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <MetaRow author={post.author} publishedAt={post.publishedAt} />
+            <span className="font-mono text-[0.75rem] text-accent tracking-[0.04em] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              Ler artigo →
+            </span>
+          </div>
         </div>
 
-        {/* Hover: subtle accent tint */}
-        <div className="hero-hover absolute inset-0 opacity-0 group-hover:opacity-100" />
+        {/* Abstract visual — dot grid + decorative number */}
+        <div className="img-dot-grid hidden lg:flex items-end justify-end p-8 min-h-[360px]">
+          <span className="article-number" aria-hidden="true">
+            01
+          </span>
+        </div>
       </div>
-
-      {/* Bottom accent bar — grows on hover */}
-      <div className="accent-reveal scale-x-[0.4] group-hover:scale-x-100 transition-transform duration-300 origin-left" />
     </a>
   );
 }
 
 function GridCard({ post, href }: { post: Post; href: string }) {
   return (
-    <a href={href} className="card block no-underline group">
-      {/* Image placeholder */}
-      <div className="img-card aspect-[16/9] relative">
-        {/* Category badge in corner */}
-        <div className="absolute top-3 left-3">
-          <span className="badge badge-glass">{post.category}</span>
-        </div>
-      </div>
+    <a href={href} className="card-text card block no-underline p-6 group">
+      <span className="badge mb-5 inline-flex">{post.category}</span>
 
-      {/* Card body */}
-      <div className="p-5">
-        <h2 className="font-display text-[clamp(1rem,1.5vw,1.125rem)] tracking-[-0.01em] leading-[1.3] text-text mb-2 text-balance line-clamp-3">
-          {post.title}
-        </h2>
+      <h2 className="font-display text-[1.0625rem] tracking-[-0.01em] leading-[1.35] text-text mb-3 text-balance line-clamp-3">
+        {post.title}
+      </h2>
 
-        <p className="text-[0.8125rem] text-text-2 leading-[1.55] mb-4 line-clamp-2">
-          {post.excerpt}
-        </p>
+      <p className="text-[0.8125rem] text-text-2 leading-[1.65] mb-5 line-clamp-2">
+        {post.excerpt}
+      </p>
 
-        <MetaRow author={post.author} publishedAt={post.publishedAt} readTimeMinutes={4} />
-      </div>
+      <MetaRow author={post.author} publishedAt={post.publishedAt} readTimeMinutes={4} />
     </a>
   );
 }

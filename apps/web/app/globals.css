@@ -148,24 +148,23 @@ body {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   overflow: hidden;
-  transition: border-color 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+  transition: border-color 250ms ease, box-shadow 250ms ease;
 }
 .card:hover {
-  border-color: color-mix(in srgb, var(--color-accent) 35%, var(--color-border));
-  transform: translateY(-3px);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+  border-color: color-mix(in srgb, var(--color-accent) 20%, var(--color-border));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-accent) 6%, transparent),
+              0 12px 40px rgba(0, 0, 0, 0.45);
 }
 
-/* Text-only card: accent bar on top */
-.card-text::before {
-  content: '';
-  display: block;
-  height: 2px;
-  background: color-mix(in srgb, var(--color-accent) 20%, var(--color-border));
-  transition: background 220ms ease;
+/* Text-only card: inset accent top bar reveals on hover */
+.card-text {
+  box-shadow: inset 0 2px 0 color-mix(in srgb, var(--color-accent) 12%, var(--color-border));
+  transition: box-shadow 250ms ease, border-color 250ms ease;
 }
-.card-text:hover::before {
-  background: var(--color-accent);
+.card-text:hover {
+  box-shadow: inset 0 2px 0 var(--color-accent),
+              0 0 0 1px color-mix(in srgb, var(--color-accent) 6%, transparent),
+              0 12px 40px rgba(0, 0, 0, 0.45);
 }
 
 /* ─── NAV LINK ───────────────────────────────────────────────── */
@@ -283,51 +282,38 @@ body {
   -webkit-backdrop-filter: blur(16px);
 }
 
-/* ─── ACCENT BARS ─────────────────────────────────────────────── */
+/* ─── ACCENT BAR (header gradient) ───────────────────────────── */
 .accent-bar {
   height: 2px;
   background: linear-gradient(to right, var(--color-accent), color-mix(in srgb, var(--color-accent) 0%, transparent) 70%);
 }
-.accent-reveal {
-  height: 2px;
-  background: linear-gradient(to right, var(--color-accent), color-mix(in srgb, var(--color-accent) 20%, transparent));
+
+/* ─── HERO CARD (two-column editorial) ───────────────────────── */
+.hero-card {
+  transition: border-color 300ms ease, box-shadow 300ms ease;
 }
-.accent-edge {
-  background: var(--color-accent);
-  opacity: 0.8;
+.hero-card:hover {
+  border-color: color-mix(in srgb, var(--color-accent) 22%, var(--color-border));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-accent) 6%, transparent),
+              0 20px 64px rgba(0, 0, 0, 0.55);
 }
 
-/* ─── IMAGE PLACEHOLDERS ──────────────────────────────────────── */
-.img-hero {
-  background:
-    radial-gradient(ellipse 70% 80% at 15% 85%, color-mix(in srgb, var(--color-accent) 35%, transparent), transparent 65%),
-    radial-gradient(ellipse 45% 60% at 80% 20%, color-mix(in srgb, var(--color-accent) 18%, transparent), transparent 60%),
-    radial-gradient(ellipse 80% 50% at 50% 110%, color-mix(in srgb, var(--color-accent) 8%, transparent), transparent 70%),
-    var(--color-surface-2);
-}
-.img-card {
-  background:
-    radial-gradient(ellipse 60% 80% at 20% 85%, color-mix(in srgb, var(--color-accent) 28%, transparent), transparent 65%),
-    radial-gradient(ellipse 40% 50% at 78% 22%, color-mix(in srgb, var(--color-accent) 14%, transparent), transparent 60%),
-    var(--color-surface-2);
+/* ─── DOT GRID (abstract visual panel) ───────────────────────── */
+.img-dot-grid {
+  background-color: var(--color-surface-2);
+  background-image: radial-gradient(circle, var(--color-border-2) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
-/* ─── HERO OVERLAYS ───────────────────────────────────────────── */
-.hero-overlay {
-  background: linear-gradient(to top, rgba(10,12,15,0.96) 0%, rgba(10,12,15,0.55) 45%, rgba(10,12,15,0.1) 100%);
-}
-.hero-hover {
-  background: color-mix(in srgb, var(--color-accent) 4%, transparent);
-  transition: opacity 300ms ease;
-}
-
-/* ─── BADGE GLASS ─────────────────────────────────────────────── */
-.badge-glass {
-  background: rgba(10,12,15,0.75) !important;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: var(--color-accent) !important;
-  border-color: color-mix(in srgb, var(--color-accent) 30%, rgba(255,255,255,0.1)) !important;
+/* ─── ARTICLE NUMBER (decorative, inside dot grid) ───────────── */
+.article-number {
+  font-family: var(--font-mono);
+  font-size: clamp(5rem, 10vw, 8rem);
+  font-weight: 700;
+  color: var(--color-border-2);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  user-select: none;
 }
 
 /* ─── AVATARS ─────────────────────────────────────────────────── */
