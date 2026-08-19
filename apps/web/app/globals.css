@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+/* ─── FONTS ──────────────────────────────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap");
+
+/* ─── DESIGN TOKENS ─────────────────────────────────────── */
+@theme {
+  --font-display: "Instrument Serif", Georgia, serif;
+  --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-mono: "DM Mono", "Fira Code", monospace;
+}
+
+/* ─── LIGHT MODE (default) ───────────────────────────────── */
+:root {
+  --color-bg:        #F5F6F8;
+  --color-surface:   #FFFFFF;
+  --color-surface-2: #ECEEF1;
+  --color-border:    #DDE0E5;
+  --color-text:      #0D0F12;
+  --color-text-2:    #4A5260;
+  --color-text-m:    #8B9099;
+
+  --color-accent:    #F7931A;
+  --color-on-accent: #000000;
+
+  --color-success:   #22C55E;
+  --color-warning:   #F59E0B;
+  --color-error:     #EF4444;
+}
+
+/* ─── DARK MODE (system) ─────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg:        #0D0F12;
+    --color-surface:   #141619;
+    --color-surface-2: #1C2026;
+    --color-border:    #252A31;
+    --color-text:      #ECEEF2;
+    --color-text-2:    #8B9099;
+    --color-text-m:    #5A6270;
+  }
+}
+
+/* ─── DARK MODE (explicit toggle) ────────────────────────── */
+:root[data-theme="dark"] {
+  --color-bg:        #0D0F12;
+  --color-surface:   #141619;
+  --color-surface-2: #1C2026;
+  --color-border:    #252A31;
+  --color-text:      #ECEEF2;
+  --color-text-2:    #8B9099;
+  --color-text-m:    #5A6270;
+}
+
+/* ─── TENANT ACCENTS ─────────────────────────────────────── */
+/* middleware.ts sets data-tenant on <html> via server component */
+[data-tenant="cripto"]     { --color-accent: #F7931A; --color-on-accent: #000000; }
+[data-tenant="saude"]      { --color-accent: #00A878; --color-on-accent: #FFFFFF; }
+[data-tenant="tech"]       { --color-accent: #6366F1; --color-on-accent: #FFFFFF; }
+[data-tenant="financas"]   { --color-accent: #1E6B4F; --color-on-accent: #FFFFFF; }
+[data-tenant="games"]      { --color-accent: #E040FB; --color-on-accent: #000000; }
+[data-tenant="esportes"]   { --color-accent: #E63946; --color-on-accent: #FFFFFF; }
+[data-tenant="streaming"]  { --color-accent: #FF3B30; --color-on-accent: #FFFFFF; }
+[data-tenant="mobilidade"] { --color-accent: #00B4D8; --color-on-accent: #000000; }
+
+/* ─── BASE STYLES ────────────────────────────────────────── */
+html { color-scheme: light dark; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── REUSABLE CLASSES ───────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  font-family: var(--font-body);
+  background: color-mix(in srgb, var(--color-accent) 15%, transparent);
+  color: var(--color-accent);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 30%, transparent);
+  transition: background 200ms, color 200ms, border-color 200ms;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  font-family: var(--font-body);
+  transition: all 150ms ease;
+  line-height: 1;
+}
+.btn-primary {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  border-color: var(--color-accent);
+}
+.btn-primary:hover { opacity: 0.88; }
+.btn-secondary {
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+.btn-secondary:hover { border-color: var(--color-text-m); }
+.btn-ghost {
+  background: transparent;
+  color: var(--color-accent);
+}
+.btn-ghost:hover {
+  background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+}
+
+/* ─── MOTION ─────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  /* biome-ignore lint/complexity/noImportantStyles: accessibility override must win specificity battles */
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
