@@ -12,10 +12,9 @@ const DOMAIN_MAP: Record<string, TenantSlug> = {
   'voltaeletrica.com.br': 'mobilidade',
 };
 
-// localhost dev: ?tenant=cripto
 const DEFAULT_TENANT: TenantSlug = 'cripto';
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const host = request.headers.get('host') ?? '';
   const hostname = host.split(':')[0];
 
