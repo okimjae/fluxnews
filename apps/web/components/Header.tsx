@@ -9,23 +9,8 @@ export function Header({ tenant }: HeaderProps) {
   const config = getTenantConfig(tenant);
 
   return (
-    <header
-      className="sticky top-0 z-50"
-      style={{
-        background: 'color-mix(in srgb, var(--color-bg) 80%, transparent)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        borderBottom: '1px solid var(--color-border)',
-      }}
-    >
-      {/* Tenant accent line */}
-      <div
-        className="h-[2px] w-full"
-        style={{
-          background:
-            'linear-gradient(to right, var(--color-accent), color-mix(in srgb, var(--color-accent) 0%, transparent) 70%)',
-        }}
-      />
+    <header className="glass border-b border-border sticky top-0 z-50">
+      <div className="accent-bar w-full" />
 
       <div className="max-page px-page flex items-center gap-6 py-[0.875rem]">
         {/* Logo */}
@@ -34,16 +19,10 @@ export function Header({ tenant }: HeaderProps) {
           className="no-underline shrink-0 flex items-baseline gap-[1px]"
           aria-label={config.name}
         >
-          <span
-            className="font-display text-text"
-            style={{ fontSize: '1.1875rem', letterSpacing: '-0.02em' }}
-          >
+          <span className="font-display text-text text-[1.1875rem] tracking-[-0.02em]">
             {config.name.slice(0, Math.ceil(config.name.length * 0.55))}
           </span>
-          <span
-            className="font-display text-accent"
-            style={{ fontSize: '1.1875rem', letterSpacing: '-0.02em' }}
-          >
+          <span className="font-display text-accent text-[1.1875rem] tracking-[-0.02em]">
             {config.name.slice(Math.ceil(config.name.length * 0.55))}
           </span>
         </a>

@@ -30,11 +30,7 @@ export function NewsletterWidget({ tenantName, compact = false }: NewsletterWidg
   if (status === 'success') {
     return (
       <div
-        className={`${compact ? 'p-4' : 'p-6'} rounded-card text-center border`}
-        style={{
-          background: 'color-mix(in srgb, var(--color-accent) 10%, var(--color-surface))',
-          borderColor: 'color-mix(in srgb, var(--color-accent) 30%, var(--color-border))',
-        }}
+        className={`newsletter-success ${compact ? 'p-4' : 'p-6'} rounded-card text-center border`}
       >
         <p className="text-[0.9375rem] text-text font-semibold">Inscrição confirmada!</p>
         <p className="text-[0.8125rem] text-text-2 mt-1">
@@ -52,7 +48,7 @@ export function NewsletterWidget({ tenantName, compact = false }: NewsletterWidg
       {!compact && (
         <p className="text-[0.9375rem] font-semibold text-text mb-1.5">Newsletter {tenantName}</p>
       )}
-      <p className={`text-[0.8125rem] text-text-2 leading-[1.5] ${compact ? 'mb-3.5' : 'mb-3.5'}`}>
+      <p className="text-[0.8125rem] text-text-2 leading-[1.5] mb-3.5">
         {compact
           ? 'Receba o digest semanal no seu email.'
           : 'Os 5 melhores artigos da semana, toda segunda-feira. Sem spam.'}
@@ -65,8 +61,7 @@ export function NewsletterWidget({ tenantName, compact = false }: NewsletterWidg
           onChange={(e) => setEmail(e.target.value)}
           placeholder="seu@email.com"
           required
-          className="flex-1 min-w-[180px] text-sm border border-border rounded-sm bg-bg text-text"
-          style={{ padding: '0.5rem 0.75rem', outline: 'none' }}
+          className="input min-w-[180px]"
         />
         <button
           type="submit"

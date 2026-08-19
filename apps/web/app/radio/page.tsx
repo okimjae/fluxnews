@@ -36,53 +36,52 @@ export default async function RadioPage() {
   const episodes = getMockEpisodes(tenant);
 
   return (
-    <div className="max-w-[800px] mx-auto px-page py-10">
-      {/* Header */}
-      <div className="mb-10">
-        <span className="badge mb-3">Radio</span>
+    <div className="max-page px-page py-10">
+      <div className="max-w-[800px]">
+        {/* Header */}
+        <div className="mb-10 animate-fade-up">
+          <span className="badge mb-4">Rádio</span>
 
-        <div className="flex items-start justify-between gap-4 flex-wrap">
-          <div>
-            <h1 className="font-display text-[clamp(1.75rem,4vw,2.25rem)] font-bold leading-[1.2] text-text mb-2">
-              {config.name} Radio
-            </h1>
-            <p className="text-[0.9375rem] text-text-2 leading-[1.5]">
-              Episódios semanais sobre {config.niche} — por {config.author.name}
-            </p>
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+            <div>
+              <h1 className="font-display text-title text-text mb-2">{config.name} Radio</h1>
+              <p className="text-[0.9375rem] text-text-2 leading-[1.5]">
+                Episódios semanais sobre {config.niche} — por {config.author.name}
+              </p>
+            </div>
+
+            {/* RSS link */}
+            <a
+              href="/radio/feed.xml"
+              className="btn-rss inline-flex items-center gap-1.5 px-[0.875rem] py-2 text-[0.8125rem] font-medium text-accent rounded-sm no-underline shrink-0"
+            >
+              <span className="text-sm">◉</span> RSS
+            </a>
           </div>
-
-          {/* RSS link */}
-          <a
-            href="/radio/feed.xml"
-            className="inline-flex items-center gap-1.5 px-[0.875rem] py-2 text-[0.8125rem] font-medium text-accent rounded-sm no-underline shrink-0"
-            style={{
-              border: '1px solid color-mix(in srgb, var(--color-accent) 35%, var(--color-border))',
-              background: 'color-mix(in srgb, var(--color-accent) 6%, var(--color-surface))',
-            }}
-          >
-            <span className="text-sm">◉</span> RSS
-          </a>
         </div>
+
+        {/* Divider */}
+        <div className="divider mb-6" />
+
+        {/* Episode count */}
+        <p className="text-[0.8125rem] text-text-m font-mono mb-5 tracking-[0.02em]">
+          {episodes.length} episódios disponíveis
+        </p>
+
+        {/* Player */}
+        <AudioPlayer episodes={episodes} />
+
+        {/* Footer note */}
+        <p className="mt-10 text-xs text-text-m leading-[1.5] text-center">
+          Episódios gerados por IA com narração de {config.author.name} ·{' '}
+          <a
+            href="/newsletter"
+            className="text-accent no-underline hover:opacity-70 transition-opacity"
+          >
+            Assinar newsletter
+          </a>
+        </p>
       </div>
-
-      {/* Divider */}
-      <div className="h-px bg-border mb-6" />
-
-      {/* Episode count */}
-      <p className="text-[0.8125rem] text-text-m font-mono mb-5 tracking-[0.02em]">
-        {episodes.length} episódios disponíveis
-      </p>
-
-      {/* Player */}
-      <AudioPlayer episodes={episodes} />
-
-      {/* Footer note */}
-      <p className="mt-10 text-xs text-text-m leading-[1.5] text-center">
-        Episódios gerados por IA com narração de {config.author.name} ·{' '}
-        <a href="/newsletter" className="text-accent no-underline">
-          Assinar newsletter
-        </a>
-      </p>
     </div>
   );
 }

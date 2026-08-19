@@ -45,12 +45,7 @@ function JsonLdScript({ data }: { data: Record<string, unknown> }) {
 }
 
 function ArticleBody({ html }: { html: string }) {
-  return (
-    <div
-      className="text-[1.0625rem] leading-[1.8] text-text"
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
-  );
+  return <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
 // Static params for demo — replaced by DB query in Phase 1
@@ -87,21 +82,20 @@ export default async function ArticlePage({ params }: Props) {
     <>
       <JsonLdScript data={jsonLd} />
 
-      <div className="max-w-[1280px] mx-auto px-page py-10">
-        {/* Main column */}
-        <article className="col-span-full max-w-[740px]">
+      <div className="max-page px-page py-10">
+        <article className="max-w-[740px]">
           {/* Breadcrumb */}
           <nav
             aria-label="Breadcrumb"
-            className="flex gap-2 text-[0.8125rem] text-text-m mb-[1.75rem] items-center flex-wrap"
+            className="flex gap-2 text-[0.8125rem] text-text-m mb-7 items-center flex-wrap"
           >
-            <a href="/" className="text-text-m no-underline">
+            <a href="/" className="text-text-m no-underline hover:text-text-2 transition-colors">
               Início
             </a>
             <span aria-hidden>›</span>
             <a
               href={`/categoria/${post.category.toLowerCase()}`}
-              className="text-text-m no-underline"
+              className="text-text-m no-underline hover:text-text-2 transition-colors"
             >
               {post.category}
             </a>
@@ -113,7 +107,7 @@ export default async function ArticlePage({ params }: Props) {
           <span className="badge mb-4">{post.category}</span>
 
           {/* Title */}
-          <h1 className="font-display text-[clamp(1.875rem,5vw,2.75rem)] font-bold leading-[1.15] text-text mb-4 text-balance">
+          <h1 className="font-display text-[clamp(1.875rem,5vw,2.75rem)] leading-[1.15] tracking-[-0.02em] text-text mb-4 text-balance">
             {post.title}
           </h1>
 
@@ -136,12 +130,7 @@ export default async function ArticlePage({ params }: Props) {
 
           {/* Author card */}
           <div className="mt-12 pt-6 border-t border-border flex gap-4 items-start">
-            <div
-              className="w-[48px] h-[48px] rounded-full flex items-center justify-center text-xl shrink-0 text-accent font-bold"
-              style={{
-                background: 'color-mix(in srgb, var(--color-accent) 20%, var(--color-surface))',
-              }}
-            >
+            <div className="avatar-surface w-12 h-12 rounded-full flex items-center justify-center text-xl shrink-0 text-accent font-bold">
               {post.author.charAt(0)}
             </div>
             <div>

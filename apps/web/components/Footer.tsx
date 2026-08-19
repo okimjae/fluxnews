@@ -20,19 +20,13 @@ export function Footer({ tenant }: FooterProps) {
         <div className="flex flex-wrap items-start justify-between gap-8 mb-8">
           {/* Brand */}
           <div>
-            <p
-              className="font-display text-text mb-1"
-              style={{ fontSize: '1.0625rem', letterSpacing: '-0.015em' }}
-            >
+            <p className="font-display text-text text-[1.0625rem] tracking-[-0.015em] mb-1">
               {config.name}
             </p>
             <p className="text-[0.75rem] text-text-m leading-[1.5]">
               {config.niche} · curadoria de IA
               <br />
-              <span
-                className="font-mono text-[0.6875rem]"
-                style={{ color: 'var(--color-accent)', opacity: 0.7 }}
-              >
+              <span className="font-mono text-[0.6875rem] text-accent opacity-70">
                 {config.domain}
               </span>
             </p>
@@ -50,7 +44,7 @@ export function Footer({ tenant }: FooterProps) {
               </a>
             ))}
             <a
-              href={`/radio/feed.xml`}
+              href="/radio/feed.xml"
               className="text-[0.8125rem] text-text-m no-underline hover:text-text-2 transition-colors duration-150"
             >
               RSS
