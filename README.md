@@ -1,63 +1,63 @@
 # fluxnews
 
-Rede de blogs de nicho operados por agentes de IA. Pesquisa, escreve, otimiza e publica conteúdo automaticamente — 24h por dia, custo operacional mínimo.
+AI-powered niche blog network. Agents research, write, optimize, and publish content automatically — 24/7, minimal operational cost.
 
 ---
 
-## Visão Geral
+## Overview
 
 ```
-Fontes (RSS, NewsAPI, Google News)
+Sources (RSS, NewsAPI, Google News)
         ↓
-Agentes IA (Researcher → Writer → SEO → Publisher)
+AI Agents (Researcher → Writer → SEO → Publisher)
         ↓
-Supabase (banco + storage + realtime)
+Supabase (database + storage + realtime)
         ↓
 Next.js multi-tenant (8 blogs, 1 codebase, Vercel free)
         ↓
-Distribuição (Telegram, Newsletter, Rádio, Shorts, Pinterest)
+Distribution (Telegram, Newsletter, Radio, Shorts, Pinterest)
 ```
 
 **Frontend:** Next.js 16 · React 19 · TypeScript 7 · Tailwind 4 · shadcn/ui  
-**Qualidade:** Biome 2 · Turborepo 2 · pnpm 11  
-**Banco:** Supabase · Drizzle ORM · pgvector · Zod 4  
-**Agentes:** Python 3.13 · Gemini 2.0 Flash · Groq/Llama 3.3 · MoviePy  
+**Quality:** Biome 2 · Turborepo 2 · pnpm 11  
+**Database:** Supabase · Drizzle ORM · pgvector · Zod 4  
+**Agents:** Python 3.13 · Gemini 2.0 Flash · Groq/Llama 3.3 · MoviePy  
 **Infra:** Vercel · GitHub Actions · Cloudflare R2 · Resend  
-**Custo operacional:** ~R$ 27/mês (só domínios) · Modelos 100% gratuitos
+**Operational cost:** ~$5/month (domains only) · 100% free AI models
 
 ---
 
-## Os Blogs
+## Blogs
 
-| Slug | Nicho | Monetização Principal |
+| Slug | Niche | Primary Monetization |
 |---|---|---|
-| `cripto` | Criptomoedas & Web3 | Afiliado CPA + Ads |
-| `saude` | Saúde & bem-estar | Afiliado + Ads |
-| `tech` | IA & Tecnologia | Afiliado hosting |
-| `financas` | Finanças pessoais | Afiliado + Ads |
-| `games` | Games & cultura | Ads volume |
-| `esportes` | Futebol & esportes | Ads eventos |
-| `streaming` | Filmes & séries | Ads + afiliado |
-| `mobilidade` | Carros & EVs | Afiliado + Ads |
+| `cripto` | Crypto & Web3 | Affiliate CPA + Ads |
+| `saude` | Health & Wellness | Affiliate + Ads |
+| `tech` | AI & Technology | Hosting affiliate |
+| `financas` | Personal Finance | Affiliate + Ads |
+| `games` | Games & Culture | Ads volume |
+| `esportes` | Football & Sports | Ads events |
+| `streaming` | Movies & Series | Ads + affiliate |
+| `mobilidade` | Cars & EVs | Affiliate + Ads |
 
 ---
 
-## Estrutura do Monorepo
+## Monorepo Structure
 
 ```
 fluxnews/
 ├── apps/
-│   └── web/                  # Next.js — todos os blogs
+│   └── web/                  # Next.js — all blogs
 │       ├── app/
-│       │   ├── [tenant]/     # rota dinâmica por nicho
-│       │   └── api/          # revalidação ISR, subscribe, RSS
-│       ├── tenants/          # config por nicho (tema, voz, afiliados)
-│       └── middleware.ts     # detecta domínio → injeta tenant
+│       │   ├── [tenant]/     # dynamic route per niche
+│       │   └── api/          # ISR revalidation, subscribe, RSS
+│       ├── tenants/          # config per niche (theme, voice, affiliates)
+│       └── middleware.ts     # detects domain → injects tenant
 ├── packages/
-│   ├── ui/                   # componentes compartilhados (shadcn/ui)
-│   ├── db/                   # schema Supabase + queries
-│   └── config/               # tipos e constantes compartilhados
-├── agents/                   # pipeline Python
+│   ├── ui/                   # shared components (shadcn/ui)
+│   ├── db/                   # Drizzle schema + queries
+│   └── config/               # shared types and constants
+├── agents/                   # Python pipeline
 │   ├── orchestrator.py
 │   ├── researcher.py
 │   ├── writer.py
@@ -69,229 +69,193 @@ fluxnews/
 │   └── ad_agent.py
 ├── .github/
 │   └── workflows/
-│       ├── pipeline.yml      # cron 4h — pipeline completo
-│       ├── breaking.yml      # cron 30min — breaking news
-│       ├── newsletter.yml    # cron diário 8h
-│       └── radio.yml         # cron 2h — boletins de áudio
+│       ├── ci.yml            # PR checks (Biome + TypeScript + build)
+│       ├── pipeline.yml      # cron 4h — full content pipeline
+│       ├── breaking.yml      # cron 30min — breaking news detector
+│       ├── newsletter.yml    # daily 8am — email digest
+│       └── radio.yml         # cron 2h — audio bulletins
 └── supabase/
-    └── migrations/           # schema versionado
+    └── migrations/           # versioned schema
 ```
 
 ---
 
-## Roadmap de Implementação
+## Implementation Roadmap
 
-> As fases são cumulativas — cada uma adiciona sobre a anterior.  
-> Cada fase tem um loop de validação antes de avançar.
-
----
-
-### Fase 0 — Fundação
-
-**Objetivo:** monorepo rodando com 1 blog estático no ar.
-
-- [ ] Criar monorepo com Turborepo
-- [ ] Configurar Next.js com App Router
-- [ ] Implementar `middleware.ts` multi-tenant
-- [ ] Criar design tokens base (cores, fontes, espaçamentos)
-- [ ] Configurar tenant `cripto` como piloto
-- [ ] Deploy no Vercel (domínio temporário)
-- [ ] Configurar GA4 + Microsoft Clarity
-- [ ] Criar schema inicial no Supabase
-
-**Critério de conclusão:** blog `cripto` no ar com página home e layout correto.
+> Phases are cumulative — each one builds on the previous.  
+> Each phase has a validation loop before advancing.
 
 ---
 
-### Fase 1 — Pipeline de Conteúdo
+### Phase 0 — Foundation
+**Goal:** monorepo running with 1 static blog live on Vercel.
 
-**Objetivo:** primeiros artigos publicados automaticamente.
+- [ ] Create monorepo with Turborepo + pnpm workspaces
+- [ ] Configure Next.js 16 with App Router
+- [ ] Implement multi-tenant `middleware.ts`
+- [ ] Base design tokens (colors, fonts, spacing)
+- [ ] Configure `cripto` tenant as pilot
+- [ ] Deploy to Vercel
+- [ ] Set up GA4 + Microsoft Clarity
+- [ ] Initial Supabase schema with Drizzle ORM
+
+**Done when:** `cripto` blog is live with home page and correct layout.
+
+---
+
+### Phase 1 — Content Pipeline
+**Goal:** first articles published automatically.
 
 - [ ] Researcher Agent (RSS + Google News RSS + NewsAPI)
 - [ ] Writer Agent (Groq + Llama 3.3 70B)
 - [ ] SEO Agent (quality gates + title + meta + JSON-LD)
 - [ ] Publisher Agent (Supabase + ISR revalidation)
-- [ ] Orchestrator (lógica Python pura)
-- [ ] GitHub Actions workflow `pipeline.yml` (cron 4h)
-- [ ] Sistema de tags (banco + páginas `/tag/[slug]`)
-- [ ] Internal linking via pgvector
+- [ ] Orchestrator (pure Python logic)
+- [ ] GitHub Actions `pipeline.yml` (cron every 4h)
+- [ ] Tag system (database + `/tag/[slug]` pages)
+- [ ] Internal linking via pgvector semantic search
 
-**Critério de conclusão:** 3 artigos publicados automaticamente sem intervenção.
+**Done when:** 3 articles published automatically without intervention.
 
 ---
 
-### Fase 2 — Distribuição Básica
+### Phase 2 — Basic Distribution
+**Goal:** content reaching beyond the blog.
 
-**Objetivo:** conteúdo chegando além do blog.
-
-- [ ] Telegram Bot por nicho (Publisher Agent envia)
+- [ ] Telegram Bot per niche (Publisher Agent sends)
 - [ ] Breaking news detector (`breaking.yml`, cron 30min)
-- [ ] Web Stories format (5 cards por artigo)
+- [ ] Web Stories format (5 cards per article)
 - [ ] Newsletter Agent + Resend
-- [ ] Formulário de inscrição inline nos artigos
+- [ ] Inline subscription form in articles
 - [ ] Push notifications (OneSignal snippet)
-- [ ] Taboola widget (snippet)
+- [ ] Taboola widget
 
-**Critério de conclusão:** artigo publicado → chega no Telegram e na newsletter automaticamente.
-
----
-
-### Fase 3 — Áudio e Rádio
-
-**Objetivo:** blog com rádio própria e podcast gerado automaticamente.
-
-- [ ] Radio Agent (script de locução + Google Cloud TTS)
-- [ ] Storage de áudio no Cloudflare R2
-- [ ] Player persistente no rodapé do blog
-- [ ] Página `/radio` com histórico de boletins
-- [ ] RSS feed de podcast (`/podcast/[tenant]/feed.xml`)
-- [ ] GitHub Actions `radio.yml` (cron 2h)
-- [ ] Transcrição do boletim indexada pelo SEO
-
-**Critério de conclusão:** boletim gerado a cada 2h, tocando no blog, disponível como podcast.
+**Done when:** article published → arrives on Telegram and newsletter automatically.
 
 ---
 
-### Fase 4 — Shorts Nativos
+### Phase 3 — Audio & Radio
+**Goal:** blog with its own radio and auto-generated podcast.
 
-**Objetivo:** feed de vídeos curtos hospedado no próprio blog.
+- [ ] Radio Agent (narration script + Google Cloud TTS)
+- [ ] Audio storage on Cloudflare R2
+- [ ] Persistent player in blog footer
+- [ ] `/radio` page with bulletin history
+- [ ] Podcast RSS feed (`/podcast/[tenant]/feed.xml`)
+- [ ] GitHub Actions `radio.yml` (cron every 2h)
+- [ ] Bulletin transcript indexed by SEO Agent
 
-- [ ] Video Agent (MoviePy — combina story cards + áudio TTS)
-- [ ] Storage de vídeo no Cloudflare R2
-- [ ] Página `/shorts` com feed vertical (scroll-snap)
-- [ ] Player mobile com auto-play
+**Done when:** bulletin generated every 2h, playing on blog, available as podcast.
+
+---
+
+### Phase 4 — Native Shorts
+**Goal:** short video feed hosted on the blog itself.
+
+- [ ] Video Agent (MoviePy — combines story cards + TTS audio)
+- [ ] Video storage on Cloudflare R2
+- [ ] `/shorts` page with vertical feed (CSS scroll-snap)
+- [ ] Mobile player with auto-play
 - [ ] Video structured data (JSON-LD `VideoObject`)
-- [ ] AdSense for Video (pre-roll 3s bumper)
-- [ ] Tabela `shorts` no Supabase
+- [ ] AdSense for Video (3s bumper pre-roll)
+- [ ] `shorts` table in Supabase
 
-**Critério de conclusão:** short gerado automaticamente a cada artigo, tocando no blog.
-
----
-
-### Fase 5 — Ads Não-Invasivos
-
-**Objetivo:** sistema de ads contextual que preserva UX.
-
-- [ ] Ad Agent (decide tipo de ad por contexto do artigo)
-- [ ] Contextual Inline Card (affiliate por tag)
-- [ ] End Card (newsletter + afiliado após leitura completa)
-- [ ] Scroll-triggered (após 60% de leitura)
-- [ ] Product Recommendation Cards (para artigos com intenção de compra)
-- [ ] Sponsor of the Day (slot premium por blog por dia)
-- [ ] Data Visualization patrocinada
-
-**Critério de conclusão:** ad correto aparece para artigo correto, sem banner genérico.
+**Done when:** short auto-generated per article, playing on blog.
 
 ---
 
-### Fase 6 — Escala (8 nichos)
+### Phase 5 — Non-Invasive Ads
+**Goal:** contextual ad system that preserves UX.
 
-**Objetivo:** replicar para todos os blogs com mínimo de esforço.
+- [ ] Ad Agent (decides ad type based on article context)
+- [ ] Contextual Inline Card (affiliate triggered by tag)
+- [ ] End Card (newsletter + affiliate after full read)
+- [ ] Scroll-triggered (after 60% scroll depth)
+- [ ] Product Recommendation Cards (purchase-intent articles)
+- [ ] Sponsor of the Day (premium slot per blog per day)
+- [ ] Sponsored Data Visualization
 
-- [ ] Criar tenant config para os 7 nichos restantes
-- [ ] Design tokens por nicho (cores, fontes, modo claro/escuro)
-- [ ] Personas de autores por nicho (bios, fotos geradas)
-- [ ] Páginas institucionais por domínio (`/sobre`, `/contato`, `/politica-editorial`)
-- [ ] Canais Telegram por nicho
-- [ ] Listas de email por nicho
-- [ ] Submissão ao Google News Publisher Center (8 propriedades)
-- [ ] Google Search Console (8 propriedades)
-- [ ] Pinterest auto-posting no Publisher Agent
-
-**Critério de conclusão:** todos os 8 blogs publicando automaticamente com identidade própria.
+**Done when:** correct ad appears for correct article, no generic banners.
 
 ---
 
-### Fase 7 — Multilíngue
+### Phase 6 — Scale (8 niches)
+**Goal:** replicate to all blogs with minimal effort.
 
-**Objetivo:** inglês como segundo idioma (maior RPM).
+- [ ] Tenant config for remaining 7 niches
+- [ ] Design tokens per niche (colors, fonts, light/dark)
+- [ ] Author personas per niche (bios, AI-generated photos)
+- [ ] Institutional pages per domain (`/about`, `/contact`, `/editorial-policy`)
+- [ ] Telegram channels per niche
+- [ ] Email lists per niche
+- [ ] Submit to Google News Publisher Center (8 properties)
+- [ ] Google Search Console (8 properties)
+- [ ] Pinterest auto-posting in Publisher Agent
 
-- [ ] Decisão de estrutura: subdiretórios `/en/` no mesmo domínio
-- [ ] Writer Agent gera EN nativamente (não tradução)
-- [ ] SEO Agent pesquisa keywords no mercado US
-- [ ] hreflang em todas as páginas
-- [ ] TTS em inglês (voz `en-US-Neural2-D`)
-- [ ] Tenant configs em EN para todos os nichos
-
-**Critério de conclusão:** mesmo artigo publicado em PT e EN com URLs e keywords distintas.
-
----
-
-### Fase 8 — Gerador de Novos Blogs (skill)
-
-**Objetivo:** criar um novo blog em qualquer nicho com 1 comando.
-
-- [ ] CLI `fluxnews create-blog --niche "moda" --lang pt`
-- [ ] Gera automaticamente: tenant config, design tokens, personas, afiliados sugeridos
-- [ ] Cria canal Telegram, lista de email, propriedade Search Console
-- [ ] Documenta o novo nicho no README
-- [ ] Skill Claude Code para orquestrar tudo isso
-
-**Critério de conclusão:** novo blog no ar em menos de 30 minutos, sem editar código manualmente.
+**Done when:** all 8 blogs publishing automatically with distinct identities.
 
 ---
 
-## Como Rodar Localmente
+### Phase 7 — Multilingual
+**Goal:** English as second language (higher RPM).
+
+- [ ] Subdirectory structure `/en/` on same domain
+- [ ] Writer Agent generates EN natively (not translation)
+- [ ] SEO Agent researches keywords in US market
+- [ ] hreflang on all pages
+- [ ] TTS in English (voice `en-US-Neural2-D`)
+- [ ] EN tenant configs for all niches
+
+**Done when:** same article published in PT and EN with distinct URLs and keywords.
+
+---
+
+### Phase 8 — Blog Generator (CLI skill)
+**Goal:** create a new blog in any niche with 1 command.
+
+- [ ] CLI `fluxnews create-blog --niche "fashion" --lang en`
+- [ ] Auto-generates: tenant config, design tokens, author personas, suggested affiliates
+- [ ] Creates Telegram channel, email list, Search Console property
+- [ ] Documents new niche in README
+- [ ] Claude Code skill to orchestrate everything
+
+**Done when:** new blog live in under 30 minutes, no manual code editing.
+
+---
+
+## Getting Started
 
 ```bash
 # clone
 git clone git@github.com:okimjae/fluxnews.git
 cd fluxnews
 
-# instala dependências
-npm install
+# install dependencies
+pnpm install
 
-# configura variáveis de ambiente
+# set up environment variables
 cp .env.example .env.local
-# preencha: SUPABASE_URL, SUPABASE_ANON_KEY, GEMINI_API_KEY, GROQ_API_KEY...
 
-# sobe o banco
+# start local database
 npx supabase start
 
-# roda o blog
-npm run dev
+# run the blog
+pnpm dev
 
-# roda os agentes manualmente
+# run agents manually (dry run)
 cd agents && python orchestrator.py --tenant cripto --dry-run
 ```
 
 ---
 
-## Variáveis de Ambiente
+## Documentation
 
-```env
-# Supabase
-SUPABASE_URL=
-SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
-
-# Modelos IA (gratuitos)
-GEMINI_API_KEY=
-GROQ_API_KEY=
-
-# Fontes de notícia
-NEWSAPI_KEY=
-SERPER_API_KEY=
-
-# Distribuição
-TELEGRAM_BOT_TOKEN_CRIPTO=
-RESEND_API_KEY=
-
-# Storage
-CLOUDFLARE_R2_ACCESS_KEY=
-CLOUDFLARE_R2_SECRET_KEY=
-CLOUDFLARE_R2_BUCKET=
-
-# TTS
-GOOGLE_CLOUD_TTS_KEY=
-```
+| Document | Description |
+|---|---|
+| [docs/stack.md](docs/stack.md) | Tech stack, versions and justifications |
+| [docs/workflow.md](docs/workflow.md) | TBD branching, Scrum process, PR flow |
+| [docs/architecture.md](docs/architecture.md) | Agent pipeline deep dive *(coming soon)* |
 
 ---
 
-## Documentação Completa
-
-Ver [`/docs/architecture.md`](/docs/architecture.md) para detalhes de cada agente, decisões de tecnologia e estratégia de monetização.
-
----
-
-*fluxnews — okimjae · 2026*
+*fluxnews — [okimjae](https://github.com/okimjae) · 2026*

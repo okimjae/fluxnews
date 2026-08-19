@@ -1,68 +1,70 @@
-# fluxnews — Stack de Tecnologias
+# fluxnews — Tech Stack
 
-Versões fixadas e justificativas de cada escolha.
+Pinned versions and justification for every technology choice.
 
 ---
 
 ## Runtime
 
-| Tecnologia | Versão | Justificativa |
+| Technology | Version | Justification |
 |---|---|---|
-| **Node.js** | 22 LTS | LTS ativo até abril 2027. Estável para produção. |
-| **pnpm** | 11.x | Workspace nativo, disco compartilhado entre pacotes, mais rápido que npm/yarn. |
-| **Python** | 3.13 (via pyenv) | Features modernas de async/await, tipagem nativa melhorada, suporte até 2029. |
+| **Node.js** | 22 LTS | Active LTS until April 2027. Production-stable. |
+| **pnpm** | 11.x | Native workspaces, shared disk cache, faster than npm/yarn in monorepos. |
+| **Python** | 3.13 (via pyenv) | Modern async/await, improved native typing, supported until 2029. |
 
-### Gerenciar Python com pyenv
+### Managing Python with pyenv
 
 ```bash
 brew install pyenv
 pyenv install 3.13
-echo "3.13" > agents/.python-version  # versão local do projeto
-pip install uv                          # gerenciador de pacotes Python rápido
+echo "3.13" > agents/.python-version   # project-local version
+pip install uv                           # fast Python package manager
 ```
 
 ---
 
 ## Frontend
 
-| Tecnologia | Versão | Justificativa |
+| Technology | Version | Justification |
 |---|---|---|
-| **Next.js** | 16.x | App Router maduro, Turbopack estável, ISR, middleware para multi-tenant. |
-| **React** | 19.x | Server Components, concurrent features, use() hook. |
-| **TypeScript** | 7.x | Strict mode, performance melhorada. Migração de TS 5→7 exige `verbatimModuleSyntax`. |
-| **Tailwind CSS** | 4.x | CSS-first config (sem tailwind.config.js), tokens nativos via CSS custom properties. |
-| **shadcn/ui** | latest | Componentes copiados para o projeto (você possui o código), Radix UI acessível. |
+| **Next.js** | 16.x | Stable App Router, Turbopack, ISR, middleware for multi-tenant routing. |
+| **React** | 19.x | Server Components, concurrent features, `use()` hook. |
+| **TypeScript** | 7.x | Strict mode, improved performance. TS 7 requires `verbatimModuleSyntax`. |
+| **Tailwind CSS** | 4.x | CSS-first config (no `tailwind.config.js`), native CSS custom properties. |
+| **shadcn/ui** | latest | Components copied into the project (you own the code), Radix UI accessibility. |
 
-### Por que Tailwind 4 muda o jogo para multi-tenant
+### Why Tailwind 4 is ideal for multi-tenant
 
-No Tailwind 3, design tokens eram configurados em JS. No Tailwind 4, são CSS custom properties nativas — perfeito para nosso sistema de temas por tenant:
+In Tailwind 3, design tokens lived in JS config. In Tailwind 4, they are native CSS custom properties — perfect for our per-tenant theme system:
 
 ```css
 /* apps/web/app/globals.css */
 @theme {
-  --color-accent: #F7931A;       /* cripto: laranja */
+  --color-accent: #F7931A;
   --font-display: "Space Grotesk";
 }
 
 [data-tenant="saude"] {
-  --color-accent: #2D9E6B;       /* saude: verde */
+  --color-accent: #2D9E6B;
   --font-display: "Lora";
 }
 ```
 
+One `<ArticleCard />` component, eight distinct visuals — zero code duplication.
+
 ---
 
-## Banco de Dados
+## Database
 
-| Tecnologia | Versão | Justificativa |
+| Technology | Version | Justification |
 |---|---|---|
-| **Supabase** | hosted | PostgreSQL + pgvector + Realtime + Storage em um serviço. Free tier robusto. |
-| **Drizzle ORM** | 0.45.x | Type-safe queries, schema-as-code, migrations versionadas. Sem abstração mágica. |
-| **Zod** | 4.x | Validação de schemas em runtime. Integra com Drizzle para inferência de tipos. |
+| **Supabase** | hosted | PostgreSQL + pgvector + Realtime + Storage in one service. Generous free tier. |
+| **Drizzle ORM** | 0.45.x | Type-safe queries, schema-as-code, versioned migrations. No magic abstraction. |
+| **Zod** | 4.x | Runtime schema validation. Integrates with Drizzle for full type inference. |
 
-### Por que Drizzle e não Supabase JS direto
+### Why Drizzle over raw Supabase JS
 
-Supabase JS retorna `any[]` sem geração de tipos. Drizzle define o schema em TypeScript e infere os tipos de todas as queries automaticamente:
+Supabase JS returns `any[]` without type generation. Drizzle defines the schema in TypeScript and infers types across all queries automatically:
 
 ```typescript
 // packages/db/schema.ts
@@ -78,7 +80,7 @@ export const posts = pgTable('posts', {
   embedding:   vector('embedding', { dimensions: 1536 }),
 })
 
-// query 100% tipada — TypeScript sabe o shape de `posts`
+// fully typed query — TypeScript knows the exact shape of `posts`
 const posts = await db
   .select()
   .from(postsTable)
@@ -90,13 +92,13 @@ const posts = await db
 
 ---
 
-## Qualidade de Código
+## Code Quality
 
-| Tecnologia | Versão | Justificativa |
+| Technology | Version | Justification |
 |---|---|---|
-| **Biome** | 2.x | Lint + format em um binário Rust. 10-100x mais rápido que ESLint + Prettier. Sem conflito de regras. |
+| **Biome** | 2.x | Lint + format in one Rust binary. 10-100x faster than ESLint + Prettier. No rule conflicts. |
 
-### Configuração Biome
+### Biome configuration
 
 ```json
 // biome.json
@@ -115,70 +117,70 @@ const posts = await db
 }
 ```
 
-Comandos:
+Commands:
 ```bash
-pnpm biome ci          # CI: verifica lint + format (não altera)
-pnpm biome check       # local: verifica tudo
-pnpm biome check --write  # local: corrige automaticamente
+pnpm biome ci            # CI: check lint + format (read-only)
+pnpm biome check         # local: check everything
+pnpm biome check --write # local: auto-fix
 ```
 
 ---
 
 ## Build / Monorepo
 
-| Tecnologia | Versão | Justificativa |
+| Technology | Version | Justification |
 |---|---|---|
-| **Turborepo** | 2.x | Cache inteligente de tasks, paralelização, pipelines entre pacotes. |
+| **Turborepo** | 2.x | Smart task caching, parallelization, cross-package pipelines. |
 
-### Pipeline do Turborepo
+### Turborepo pipeline
 
 ```json
 // turbo.json
 {
   "pipeline": {
-    "build":      { "dependsOn": ["^build"], "outputs": [".next/**"] },
-    "dev":        { "cache": false, "persistent": true },
-    "type-check": { "dependsOn": ["^build"] },
-    "lint":       {}
+    "build":       { "dependsOn": ["^build"], "outputs": [".next/**"] },
+    "dev":         { "cache": false, "persistent": true },
+    "type-check":  { "dependsOn": ["^build"] },
+    "lint":        {}
   }
 }
 ```
 
 ---
 
-## Agentes Python
+## Python Agents
 
-| Tecnologia | Versão | Justificativa |
+| Package | Version | Justification |
 |---|---|---|
-| **google-generativeai** | latest | Gemini 2.0 Flash — 1.5M context, grátis, multimodal. |
-| **groq** | latest | Llama 3.3 70B — geração de texto ultra-rápida, grátis. |
-| **httpx** | latest | HTTP async, substituto moderno do requests. |
-| **pydantic** | v2 | Validação e serialização de dados dos agentes. |
-| **MoviePy** | 2.x | Geração de vídeo (shorts) a partir de imagens + áudio. |
-| **feedparser** | latest | Parsing de RSS feeds. |
+| **google-generativeai** | latest | Gemini 2.0 Flash — 1.5M context window, free, multimodal. |
+| **groq** | latest | Llama 3.3 70B — ultra-fast text generation, free tier. |
+| **httpx** | latest | Async HTTP client, modern replacement for `requests`. |
+| **pydantic** | v2 | Agent data validation and serialization. |
+| **MoviePy** | 2.x | Video generation (shorts) from images + audio. |
+| **feedparser** | latest | RSS feed parsing. |
 
 ---
 
-## Infraestrutura / Serviços
+## Infrastructure & Services
 
-| Serviço | Plano | Uso |
+| Service | Plan | Usage |
 |---|---|---|
-| **Vercel** | Hobby (free) | Hosting Next.js, preview por PR, domínios customizados |
+| **Vercel** | Hobby (free) | Next.js hosting, PR previews, custom domains |
 | **Supabase** | Free tier | PostgreSQL + pgvector + Realtime + Storage |
-| **Cloudflare R2** | Free (10GB) | Storage de áudio (boletins) e vídeo (shorts) |
-| **GitHub Actions** | Free (público) | Cron dos agentes, CI/CD |
-| **Resend** | Free (3k/mês) | Envio de newsletter |
-| **Google Cloud TTS** | Free (1M chars) | Text-to-speech para rádio |
-| **Google AI Studio** | Free | API do Gemini Flash |
-| **Groq** | Free tier | API do Llama 3.3 |
-| **NewsAPI.org** | Free (100 req/dia) | Busca de notícias |
+| **Cloudflare R2** | Free (10GB) | Audio (bulletins) and video (shorts) storage |
+| **GitHub Actions** | Free (public repo) | Agent cron jobs, CI/CD |
+| **Resend** | Free (3k/month) | Newsletter sending |
+| **Google Cloud TTS** | Free (1M chars) | Text-to-speech for radio |
+| **Google AI Studio** | Free | Gemini Flash API |
+| **Groq** | Free tier | Llama 3.3 API |
+| **NewsAPI.org** | Free (100 req/day) | News search |
 | **OneSignal** | Free (10k subs) | Push notifications |
 
-**Custo total: ~R$ 27/mês** (só domínios .com.br)
+**Total cost: ~$5/month** (domains only)
 
 ---
 
-## Variáveis de Ambiente
+## Environment Variables
 
 ```env
 # Supabase
@@ -186,18 +188,18 @@ SUPABASE_URL=
 SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 
-# Database (Drizzle)
+# Database (Drizzle direct connection)
 DATABASE_URL=
 
-# IA Models (gratuitos)
+# AI Models (free)
 GEMINI_API_KEY=
 GROQ_API_KEY=
 
-# Fontes de notícia
+# News sources
 NEWSAPI_KEY=
 SERPER_API_KEY=
 
-# Distribuição
+# Distribution
 TELEGRAM_BOT_TOKEN_CRIPTO=
 TELEGRAM_BOT_TOKEN_SAUDE=
 TELEGRAM_BOT_TOKEN_TECH=
@@ -217,10 +219,10 @@ R2_PUBLIC_URL=
 # TTS
 GOOGLE_CLOUD_TTS_KEY=
 
-# Next.js
+# Next.js internal
 NEXTJS_REVALIDATE_SECRET=
 ```
 
 ---
 
-*Última atualização: 2026-08-18*
+*Last updated: 2026-08-18*

@@ -1,6 +1,6 @@
 # fluxnews — Engineering Workflow
 
-Processo de desenvolvimento, branching strategy, Scrum e ambientes.
+Development process, branching strategy, environments, and Scrum.
 
 ---
 
@@ -8,41 +8,41 @@ Processo de desenvolvimento, branching strategy, Scrum e ambientes.
 
 **Trunk-Based Development (TBD)**
 
-- `main` é o trunk — sempre estável, sempre deployável
-- Feature branches são curtas (idealmente 1-2 dias)
-- Nenhum commit direto em `main`
-- PRs pequenos e frequentes — mais fácil de revisar, menos conflito
-- CI/CD passa antes de qualquer merge
+- `main` is the trunk — always stable, always deployable
+- Feature branches are short-lived (ideally 1-2 days max)
+- No direct commits to `main`
+- Small, frequent PRs — easier to review, fewer conflicts
+- CI/CD must pass before any merge
 
-**Por que TBD e não GitFlow:**
-GitFlow cria branches de longa duração (`develop`, `release`) que geram merges complexos e atrasam feedback. TBD mantém o time sincronizado e o código sempre integrável.
+**Why TBD over GitFlow:**
+GitFlow creates long-lived branches (`develop`, `release`) that produce complex merges and delay feedback. TBD keeps the team in sync and the codebase always integrable.
 
 ---
 
-## 2. Ambientes
+## 2. Environments
 
-| Ambiente | Trigger | URL |
+| Environment | Trigger | URL |
 |---|---|---|
-| **Production** | merge em `main` | `criptosignal.com.br` (e outros domínios) |
-| **Preview** | PR aberto | `fluxnews-git-[branch].vercel.app` |
-| **Local** | `npm run dev` | `localhost:3000` |
+| **Production** | merge to `main` | `criptosignal.com.br` (and other domains) |
+| **Preview** | PR opened | `fluxnews-git-[branch].vercel.app` |
+| **Local** | `pnpm dev` | `localhost:3000` |
 
-> Não existe branch `homolog` ou `staging`. O ambiente de staging é o **Vercel Preview** — criado automaticamente por PR. Teste ali, aprove, mergea.
+> There is no `homolog` or `staging` branch. Staging is the **Vercel Preview** environment — created automatically per PR. Test there, approve, merge.
 
 ---
 
 ## 3. Branch Naming
 
 ```
-feature/[description]     → nova funcionalidade
-fix/[description]         → correção de bug
-chore/[description]       → setup, config, dependências
+feature/[description]     → new functionality
+fix/[description]         → bug fix
+chore/[description]       → setup, config, dependencies
 ci/[description]          → GitHub Actions, pipelines
-docs/[description]        → documentação
-refactor/[description]    → refatoração sem mudança de comportamento
+docs/[description]        → documentation
+refactor/[description]    → refactoring without behavior change
 ```
 
-**Exemplos:**
+**Examples:**
 ```
 feature/researcher-agent
 feature/telegram-publisher
@@ -52,36 +52,36 @@ ci/pipeline-cron-workflow
 docs/api-endpoints
 ```
 
-**Regras:**
-- Sempre em inglês
+**Rules:**
+- Always in English
 - Kebab-case
-- Descritivo mas curto (máximo 4-5 palavras)
-- Uma branch por issue/task
+- Descriptive but short (4-5 words max)
+- One branch per issue/task
 
 ---
 
 ## 4. Commit Convention
 
-Seguimos **Conventional Commits**:
+We follow **Conventional Commits**:
 
 ```
 <type>(<scope>): <subject>
 
-<body opcional>
+<optional body>
 ```
 
-| Type | Quando usar |
+| Type | When to use |
 |---|---|
-| `feat` | Nova funcionalidade |
-| `fix` | Correção de bug |
-| `docs` | Documentação |
-| `chore` | Setup, config, deps |
+| `feat` | New feature |
+| `fix` | Bug fix |
+| `docs` | Documentation |
+| `chore` | Setup, config, dependencies |
 | `ci` | GitHub Actions |
-| `refactor` | Sem mudança de comportamento |
-| `perf` | Otimização |
-| `test` | Testes |
+| `refactor` | No behavior change |
+| `perf` | Performance improvement |
+| `test` | Tests |
 
-**Exemplos:**
+**Examples:**
 ```
 feat(agents): add researcher agent with RSS support
 fix(seo): correct keyword density threshold calculation
@@ -90,39 +90,37 @@ ci: add pipeline cron workflow for content generation
 docs: update workflow with branching strategy
 ```
 
-**Regras do subject:**
-- Imperativo presente: "Add feature" não "Added feature"
-- Primeira letra maiúscula
-- Sem ponto no final
-- Máximo 70 caracteres
+**Subject rules:**
+- Imperative present tense: "Add feature" not "Added feature"
+- Capitalize first letter
+- No period at the end
+- Max 70 characters
 
 ---
 
 ## 5. Pull Request Process
 
-### Abrindo um PR
+### Opening a PR
 
-1. Branch atualizada com `main` (`git rebase main`)
-2. Todos os commits seguem Conventional Commits
-3. PR title segue o mesmo formato do commit
-4. Preencher o PR template completamente
-5. Linkar a issue relacionada (`Closes #n`)
+1. Branch rebased on `main` (`git rebase main`)
+2. All commits follow Conventional Commits
+3. PR title follows the same format as commits
+4. PR template filled out completely
+5. Related issue linked (`Closes #n`)
 
-### PR Template
+### See `.github/pull_request_template.md`
 
-Ver `.github/pull_request_template.md`
+### Merge criteria
 
-### Critérios para merge
-
-- [ ] CI passando (lint, build, type-check)
-- [ ] Preview URL testado manualmente
-- [ ] PR description preenchida
-- [ ] Issue linkada
+- [ ] CI passing (Biome + TypeScript + build)
+- [ ] Vercel preview URL manually tested
+- [ ] PR description filled out
+- [ ] Issue linked
 
 ### Merge strategy
 
-- **Squash merge** para feature branches → histórico limpo em `main`
-- **Merge commit** para releases importantes
+- **Squash merge** for feature branches → clean history on `main`
+- **Merge commit** for significant releases
 
 ---
 
@@ -130,45 +128,46 @@ Ver `.github/pull_request_template.md`
 
 ### Sprint
 
-- Duração: **2 semanas**
-- Cada sprint cobre uma fase do roadmap
-- Milestones no GitHub = Sprints
+- Duration: **2 weeks**
+- Each sprint covers one phase from the roadmap
+- GitHub Milestones = Sprints
 
-### Cerimônias (adaptadas para solo/pequeno time)
+### Ceremonies (adapted for solo/small team)
 
-| Cerimônia | Frequência | Formato |
+| Ceremony | Frequency | Format |
 |---|---|---|
-| Sprint Planning | Início do sprint | Mover issues do Backlog para Sprint |
-| Daily | Diário | Atualizar status das issues no board |
-| Sprint Review | Fim do sprint | Testar o que foi entregue |
-| Retrospectiva | Fim do sprint | Nota no Milestone sobre o que funcionou |
+| Sprint Planning | Sprint start | Move issues from Backlog to Sprint |
+| Daily | Daily | Update issue status on board |
+| Sprint Review | Sprint end | Test what was delivered |
+| Retrospective | Sprint end | Note on Milestone what worked |
 
 ### Board Columns
 
 ```
-📋 Backlog    → issues criadas mas não priorizadas
-🏃 Sprint     → selecionadas para o sprint atual
-🔨 In Progress → branch criada, desenvolvimento ativo
-👀 In Review  → PR aberto, aguardando aprovação/teste
-✅ Done       → PR mergeado, issue fechada
+📋 Backlog     → created issues, not yet prioritized
+🏃 Sprint      → selected for the current sprint
+🔨 In Progress → branch created, active development
+👀 In Review   → PR open, waiting for approval/testing
+✅ Done        → PR merged, issue closed
 ```
 
 ### Labels
 
-| Label | Cor | Uso |
+| Label | Color | Usage |
 |---|---|---|
-| `epic` | roxo | Agrupa stories de uma fase |
-| `story` | azul | User story (entregável de valor) |
-| `task` | verde | Tarefa técnica |
-| `bug` | vermelho | Comportamento incorreto |
-| `chore` | cinza | Setup, config |
-| `blocked` | laranja | Impedimento externo |
+| `epic` | purple | Groups stories for a phase |
+| `story` | blue | User story (deliverable value) |
+| `task` | green | Technical task |
+| `bug` | red | Incorrect behavior |
+| `chore` | gray | Setup, config |
+| `blocked` | orange | External impediment |
+| `ci` | blue | CI/CD related |
 
 ---
 
 ## 7. Issue Structure
 
-### Epic (por fase)
+### Epic (per phase)
 ```
 Epic: Phase 0 — Foundation
 Epic: Phase 1 — Content Pipeline
@@ -181,9 +180,9 @@ Epic: Phase 2 — Distribution
 As a [persona], I want [feature] so that [benefit].
 
 Acceptance Criteria:
-- [ ] Critério 1
-- [ ] Critério 2
-- [ ] Critério 3
+- [ ] Criterion 1
+- [ ] Criterion 2
+- [ ] Criterion 3
 ```
 
 ### Task
@@ -191,8 +190,8 @@ Acceptance Criteria:
 Implement [component/feature]
 
 Technical details:
-- Arquivo(s) afetado(s)
-- Abordagem técnica
+- Files affected
+- Technical approach
 - Definition of Done
 ```
 
@@ -200,42 +199,42 @@ Technical details:
 
 ## 8. Definition of Done
 
-Uma issue só vai para **Done** quando:
+An issue only moves to **Done** when:
 
-- [ ] Código implementado e commitado
-- [ ] Preview URL testado (caminho feliz + edge cases)
-- [ ] PR mergeado em `main`
-- [ ] Deploy em produção confirmado
-- [ ] Issue fechada no board
-- [ ] Documentação atualizada (se aplicável)
+- [ ] Code implemented and committed
+- [ ] Preview URL tested (happy path + edge cases)
+- [ ] PR merged to `main`
+- [ ] Production deploy confirmed
+- [ ] Issue closed on the board
+- [ ] Documentation updated (if applicable)
 
 ---
 
-## 9. Fluxo Completo — Passo a Passo
+## 9. Full Flow — Step by Step
 
 ```
-1. PLANEJAMENTO
-   ├── Abrir GitHub Project
-   ├── Selecionar issues do Backlog para o Sprint
-   └── Mover para coluna "Sprint"
+1. PLANNING
+   ├── Open GitHub Project board
+   ├── Select issues from Backlog for the Sprint
+   └── Move to "Sprint" column
 
-2. DESENVOLVIMENTO
-   ├── Pegar issue → mover para "In Progress"
+2. DEVELOPMENT
+   ├── Pick issue → move to "In Progress"
    ├── git checkout -b feature/[description]
-   ├── Desenvolver em commits pequenos e frequentes
+   ├── Develop with small, frequent commits
    └── git push origin feature/[description]
 
 3. REVIEW
-   ├── Abrir PR → Vercel sobe preview automático
-   ├── Testar no preview URL
-   ├── Mover issue para "In Review"
-   └── Revisar e aprovar o PR
+   ├── Open PR → Vercel creates preview automatically
+   ├── Test on preview URL
+   ├── Move issue to "In Review"
+   └── Review and approve the PR
 
-4. ENTREGA
+4. DELIVERY
    ├── Squash merge → main
-   ├── Vercel deploya em produção automaticamente
-   ├── Fechar issue → mover para "Done"
-   └── Deletar branch feature
+   ├── Vercel deploys to production automatically
+   ├── Close issue → move to "Done"
+   └── Delete feature branch
 
 5. REPEAT
 ```
@@ -245,21 +244,20 @@ Uma issue só vai para **Done** quando:
 ## 10. CI/CD Pipeline
 
 ```yaml
-# Em cada PR:
-biome:       biome ci (lint + format check em um comando)
+# On every PR:
+biome:       biome ci (lint + format check in one command)
 type-check:  TypeScript strict
 build:       next build
-preview:     Vercel preview deploy (automático)
+preview:     Vercel preview deploy (automatic)
 
-# Em merge para main:
-deploy:      Vercel production deploy (automático)
-agents-test: dry-run dos agentes Python
+# On merge to main:
+deploy:      Vercel production deploy (automatic)
+agents-test: dry-run of Python agents
 ```
 
-**Por que Biome e não ESLint + Prettier:**
-Biome substitui ambos em um único binário escrito em Rust. É 10-100x mais rápido,
-sem conflito de regras entre linter e formatter, e zero config para começar.
+**Why Biome over ESLint + Prettier:**
+Biome replaces both in a single Rust binary. 10-100x faster, no rule conflicts between linter and formatter, zero config to get started.
 
 ---
 
-*Última atualização: 2026-08-18*
+*Last updated: 2026-08-18*
