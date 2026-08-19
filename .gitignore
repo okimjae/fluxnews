@@ -25,3 +25,4 @@ __pycache__
 *.pyo
 .venv
 agents/.python-version
+.env*
