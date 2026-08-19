@@ -22,7 +22,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Biome CI
-        run: pnpm ci
+        run: pnpm biome:ci
 
       - name: Type-check
         run: pnpm type-check
