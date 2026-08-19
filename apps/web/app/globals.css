@@ -1,15 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap");
 @import "tailwindcss";
 
-/* ─── DESIGN TOKENS ─────────────────────────────────────── */
+/* ─── DESIGN TOKENS (@theme → Tailwind utilities) ───────────── */
 @theme {
+  /* Fonts → font-display, font-body, font-mono */
   --font-display: "Instrument Serif", Georgia, serif;
-  --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
-  --font-mono: "DM Mono", "Fira Code", monospace;
-}
+  --font-body:    "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-mono:    "DM Mono", "Fira Code", monospace;
 
-/* ─── LIGHT MODE (default) ───────────────────────────────── */
-:root {
+  /* Colors (light defaults) → text-text, bg-surface, border-border, text-accent, etc. */
   --color-bg:        #F5F6F8;
   --color-surface:   #FFFFFF;
   --color-surface-2: #ECEEF1;
@@ -17,16 +16,18 @@
   --color-text:      #0D0F12;
   --color-text-2:    #4A5260;
   --color-text-m:    #8B9099;
-
   --color-accent:    #F7931A;
   --color-on-accent: #000000;
-
   --color-success:   #22C55E;
   --color-warning:   #F59E0B;
   --color-error:     #EF4444;
+
+  /* Border radius → rounded-card, rounded-sm */
+  --radius-card: 10px;
+  --radius-sm:   6px;
 }
 
-/* ─── DARK MODE (system) ─────────────────────────────────── */
+/* ─── DARK MODE (system) ─────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --color-bg:        #0D0F12;
@@ -39,7 +40,7 @@
   }
 }
 
-/* ─── DARK MODE (explicit toggle) ────────────────────────── */
+/* ─── DARK MODE (explicit toggle) ────────────────────────────── */
 :root[data-theme="dark"] {
   --color-bg:        #0D0F12;
   --color-surface:   #141619;
@@ -50,8 +51,7 @@
   --color-text-m:    #5A6270;
 }
 
-/* ─── TENANT ACCENTS ─────────────────────────────────────── */
-/* middleware.ts sets data-tenant on <html> via server component */
+/* ─── TENANT ACCENTS ─────────────────────────────────────────── */
 [data-tenant="cripto"]     { --color-accent: #F7931A; --color-on-accent: #000000; }
 [data-tenant="saude"]      { --color-accent: #00A878; --color-on-accent: #FFFFFF; }
 [data-tenant="tech"]       { --color-accent: #6366F1; --color-on-accent: #FFFFFF; }
@@ -61,7 +61,7 @@
 [data-tenant="streaming"]  { --color-accent: #FF3B30; --color-on-accent: #FFFFFF; }
 [data-tenant="mobilidade"] { --color-accent: #00B4D8; --color-on-accent: #000000; }
 
-/* ─── BASE STYLES ────────────────────────────────────────── */
+/* ─── BASE STYLES ────────────────────────────────────────────── */
 html { color-scheme: light dark; scroll-behavior: smooth; }
 
 body {
@@ -71,7 +71,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ─── REUSABLE CLASSES ───────────────────────────────────── */
+/* ─── LAYOUT UTILITY ─────────────────────────────────────────── */
+/* Responsive horizontal page padding — use class="px-page" */
+.px-page { padding-inline: clamp(1rem, 5vw, 2rem); }
+
+/* ─── REUSABLE CLASSES ───────────────────────────────────────── */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -102,27 +106,14 @@ body {
   transition: all 150ms ease;
   line-height: 1;
 }
-.btn-primary {
-  background: var(--color-accent);
-  color: var(--color-on-accent);
-  border-color: var(--color-accent);
-}
+.btn-primary  { background: var(--color-accent); color: var(--color-on-accent); border-color: var(--color-accent); }
 .btn-primary:hover { opacity: 0.88; }
-.btn-secondary {
-  background: var(--color-surface-2);
-  color: var(--color-text);
-  border-color: var(--color-border);
-}
+.btn-secondary { background: var(--color-surface-2); color: var(--color-text); border-color: var(--color-border); }
 .btn-secondary:hover { border-color: var(--color-text-m); }
-.btn-ghost {
-  background: transparent;
-  color: var(--color-accent);
-}
-.btn-ghost:hover {
-  background: color-mix(in srgb, var(--color-accent) 10%, transparent);
-}
+.btn-ghost  { background: transparent; color: var(--color-accent); }
+.btn-ghost:hover { background: color-mix(in srgb, var(--color-accent) 10%, transparent); }
 
-/* ─── CARD HOVER ─────────────────────────────────────────── */
+/* ─── CARD HOVER ─────────────────────────────────────────────── */
 .card-link {
   transition: transform 200ms ease-out, box-shadow 200ms ease-out, border-color 200ms ease;
 }
@@ -132,7 +123,7 @@ body {
   border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-border));
 }
 
-/* ─── MOTION ─────────────────────────────────────────────── */
+/* ─── MOTION ─────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   /* biome-ignore lint/complexity/noImportantStyles: accessibility override must win specificity battles */
   *, *::before, *::after {

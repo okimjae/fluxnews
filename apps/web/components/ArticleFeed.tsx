@@ -23,19 +23,13 @@ export function ArticleFeed({ posts, config }: ArticleFeedProps) {
   return (
     <div>
       {/* Hero */}
-      <div style={{ marginBottom: '1.25rem' }}>
+      <div className="mb-5">
         <ArticleCard post={hero} variant="hero" />
       </div>
 
       {/* 3-column grid */}
       {rest.length > 0 && (
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-            gap: '1.25rem',
-          }}
-        >
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-5">
           {rest.map((post) => (
             <ArticleCard key={post.slug ?? post.title} post={post} variant="card" />
           ))}
@@ -43,27 +37,14 @@ export function ArticleFeed({ posts, config }: ArticleFeedProps) {
       )}
 
       {/* Section label */}
-      <div
-        style={{
-          marginTop: '3rem',
-          paddingTop: '2rem',
-          borderTop: '1px solid var(--color-border)',
-        }}
-      >
+      <div className="mt-12 pt-8 border-t border-border">
         <p
-          style={{
-            fontSize: '0.75rem',
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            letterSpacing: '0.09em',
-            color: 'var(--color-accent)',
-            marginBottom: '0.25rem',
-            transition: 'color 250ms',
-          }}
+          className="text-xs font-semibold uppercase tracking-[0.09em] text-accent mb-1"
+          style={{ transition: 'color 250ms' }}
         >
           {config.niche}
         </p>
-        <p style={{ fontSize: '0.875rem', color: 'var(--color-text-m)' }}>
+        <p className="text-sm text-text-m">
           Conteúdo gerado automaticamente por agentes de IA e revisado editorialmente · por{' '}
           {config.author.name}
         </p>

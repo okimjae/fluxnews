@@ -12,14 +12,7 @@ export default async function HomePage() {
   const placeholderPosts = getPlaceholderPosts(tenant);
 
   return (
-    <div
-      style={{
-        maxWidth: '1280px',
-        marginInline: 'auto',
-        paddingInline: 'clamp(1rem, 5vw, 2rem)',
-        paddingBlock: '2rem',
-      }}
-    >
+    <div className="max-w-[1280px] mx-auto px-page py-8">
       <ArticleFeed posts={placeholderPosts} tenant={tenant} config={config} />
     </div>
   );
