@@ -1,27 +1,10 @@
 import type { TenantSlug } from '@fluxnews/config';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { getAdminStats } from '@/lib/queries';
 import { getTenantConfig } from '@/tenants';
 
 export const dynamic = 'force-dynamic';
-
-// Mock stats — replace with real DB queries once Supabase is wired in
-function getMockStats(tenant: TenantSlug) {
-  const config = getTenantConfig(tenant);
-  return {
-    posts: { published: 142, draft: 18, total: 160 },
-    subscribers: { confirmed: 14200, unsubscribed: 38, total: 14238 },
-    episodes: { total: 24 },
-    shorts: { total: 12 },
-    newsletter: { last_sent: '2026-08-18', last_count: 13820 },
-    pipeline: {
-      last_run: '2026-08-19T06:04:12Z',
-      status: 'success',
-      inserted: 28,
-    },
-    tenant: config,
-  };
-}
 
 interface AdminPageProps {
   searchParams: Promise<Record<string, string>>;
@@ -38,8 +21,8 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
   const hdrs = await headers();
   const tenant = (hdrs.get('x-tenant') ?? 'cripto') as TenantSlug;
-  const stats = getMockStats(tenant);
-  const config = stats.tenant;
+  const config = getTenantConfig(tenant);
+  const stats = await getAdminStats(tenant);
 
   return (
     <div className="max-page px-page py-10">
@@ -49,22 +32,11 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           <span className="badge mb-3">Admin</span>
           <h1 className="font-display text-title text-text">{config.name} — Dashboard</h1>
           <p className="text-[0.8125rem] text-text-m mt-1">
-            Pipeline ·{' '}
-            <span
-              className={`font-medium ${stats.pipeline.status === 'success' ? 'text-success' : 'text-error'}`}
-            >
-              {stats.pipeline.status}
-            </span>
-            {' · '}
-            último run:{' '}
-            {new Date(stats.pipeline.last_run).toLocaleString('pt-BR', {
-              dateStyle: 'short',
-              timeStyle: 'short',
-            })}
+            Dados em tempo real · {new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })}
           </p>
         </div>
         <div className="font-mono text-[0.6875rem] text-text-m text-right">
-          <p>{stats.pipeline.inserted} artigos inseridos no último run</p>
+          <p>{stats.posts.published + stats.posts.draft} posts no banco</p>
         </div>
       </div>
 
@@ -73,12 +45,9 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         {[
           { label: 'Artigos publicados', value: stats.posts.published },
           { label: 'Rascunhos', value: stats.posts.draft },
-          {
-            label: 'Assinantes ativos',
-            value: stats.subscribers.confirmed.toLocaleString('pt-BR'),
-          },
-          { label: 'Episódios de rádio', value: stats.episodes.total },
-          { label: 'Shorts', value: stats.shorts.total },
+          { label: 'Assinantes ativos', value: stats.subscribers.confirmed.toLocaleString('pt-BR') },
+          { label: 'Episódios de rádio', value: stats.episodes },
+          { label: 'Shorts', value: stats.shorts },
         ].map((s) => (
           <div key={s.label} className="card p-5">
             <p className="font-display text-[1.75rem] font-bold text-text tracking-tight">
@@ -102,9 +71,19 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           </div>
           <dl className="space-y-2">
             {[
-              ['Último envio', stats.newsletter.last_sent],
-              ['Destinatários', stats.newsletter.last_count.toLocaleString('pt-BR')],
-              ['Descadastramentos', stats.subscribers.unsubscribed],
+              [
+                'Último envio',
+                stats.lastNewsletter.sentAt
+                  ? stats.lastNewsletter.sentAt.toLocaleDateString('pt-BR')
+                  : '—',
+              ],
+              [
+                'Destinatários',
+                stats.lastNewsletter.recipients != null
+                  ? stats.lastNewsletter.recipients.toLocaleString('pt-BR')
+                  : '—',
+              ],
+              ['Total de assinantes', stats.subscribers.total.toLocaleString('pt-BR')],
             ].map(([k, v]) => (
               <div key={String(k)} className="flex justify-between text-[0.8125rem]">
                 <dt className="text-text-m">{k}</dt>

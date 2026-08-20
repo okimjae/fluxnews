@@ -93,3 +93,22 @@ jobs:
           else
             echo "Não é segunda — newsletter pulada. Use workflow_dispatch para forçar."
           fi
+
+      # Purga o ISR cache do Vercel após publicação de novos artigos
+      - name: 8 — Revalidate Vercel cache
+        if: ${{ inputs.step == '' || inputs.step == 'generate' }}
+        env:
+          NEXTJS_REVALIDATE_SECRET: ${{ secrets.NEXTJS_REVALIDATE_SECRET }}
+          VERCEL_DEPLOYMENT_URL: ${{ secrets.VERCEL_DEPLOYMENT_URL }}
+        run: |
+          if [ -n "$VERCEL_DEPLOYMENT_URL" ] && [ -n "$NEXTJS_REVALIDATE_SECRET" ]; then
+            curl -s -X POST \
+              -H "Content-Type: application/json" \
+              -H "x-revalidate-secret: $NEXTJS_REVALIDATE_SECRET" \
+              -d '{}' \
+              "$VERCEL_DEPLOYMENT_URL/api/revalidate" \
+              && echo "Cache revalidado com sucesso." \
+              || echo "Revalidate falhou (não bloqueante)."
+          else
+            echo "VERCEL_DEPLOYMENT_URL ou NEXTJS_REVALIDATE_SECRET não configurado — pulando revalidate."
+          fi
