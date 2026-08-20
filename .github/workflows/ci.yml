@@ -1,6 +1,8 @@
 name: CI
 
 on:
+  push:
+    branches: [main, design/editorial-dark]
   pull_request:
     branches: [main]
 
@@ -18,6 +20,13 @@ jobs:
           node-version: 22
           cache: pnpm
 
+      - name: Cache Turbo
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: turbo-${{ runner.os }}-
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -30,5 +39,6 @@ jobs:
       - name: Build
         run: pnpm build
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://ci:ci@localhost:5432/ci' }}
           NEXT_PUBLIC_TENANT: cripto
+          NEXTJS_REVALIDATE_SECRET: ci-secret

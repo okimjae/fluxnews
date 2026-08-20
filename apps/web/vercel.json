@@ -1,9 +1,6 @@
 {
   "framework": "nextjs",
-  "crons": [
-    {
-      "path": "/api/cron/run",
-      "schedule": "0 9 * * *"
-    }
-  ]
+  "buildCommand": "cd ../.. && pnpm turbo build --filter=web",
+  "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
+  "outputDirectory": ".next"
 }
