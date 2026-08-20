@@ -20,7 +20,10 @@ on:
           - newsapi
           - generate
           - seo
+          - affiliate
           - telegram
+          - radio
+          - shorts
           - newsletter
 
 jobs:
@@ -72,11 +75,23 @@ jobs:
         if: ${{ inputs.step == '' || inputs.step == 'seo' }}
         run: python agents/seo_scorer.py ${{ inputs.tenant && format('--tenant={0}', inputs.tenant) || '' }}
 
-      - name: 5 — Telegram Publisher
+      - name: 5 — Affiliate Injector
+        if: ${{ inputs.step == '' || inputs.step == 'affiliate' }}
+        run: python agents/affiliate_injector.py ${{ inputs.tenant && format('--tenant={0}', inputs.tenant) || '' }}
+
+      - name: 6 — Telegram Publisher
         if: ${{ inputs.step == '' || inputs.step == 'telegram' }}
         run: python agents/telegram_publisher.py --limit=3 ${{ inputs.tenant && format('--tenant={0}', inputs.tenant) || '' }}
 
-      - name: 6 — Newsletter Sender (Mondays only / manual override)
+      - name: 7 — Radio Generator
+        if: ${{ inputs.step == '' || inputs.step == 'radio' }}
+        run: python agents/radio_generator.py ${{ inputs.tenant && format('--tenant={0}', inputs.tenant) || '' }}
+
+      - name: 8 — Shorts Generator
+        if: ${{ inputs.step == '' || inputs.step == 'shorts' }}
+        run: python agents/shorts_generator.py ${{ inputs.tenant && format('--tenant={0}', inputs.tenant) || '' }}
+
+      - name: 9 — Newsletter Sender (Mondays only / manual override)
         if: ${{ inputs.step == '' || inputs.step == 'newsletter' }}
         run: |
           TENANT_FLAG="${{ inputs.tenant && format('--tenant={0}', inputs.tenant) || '' }}"

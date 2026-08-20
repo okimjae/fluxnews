@@ -17,7 +17,6 @@ from datetime import datetime, timezone
 
 from dotenv import load_dotenv
 import google.generativeai as genai
-from groq import Groq
 
 from shared.db import get_db
 
@@ -40,21 +39,8 @@ PERSONAS: dict[str, str] = {
 
 # ─── LLM CALLS ────────────────────────────────────────────────────────────────
 
-def call_groq(prompt: str) -> str:
-    key = os.environ.get("GROQ_API_KEY")
-    if not key:
-        raise RuntimeError("GROQ_API_KEY not set")
-    client = Groq(api_key=key)
-    resp = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.7,
-        max_tokens=1800,
-    )
-    return resp.choices[0].message.content.strip()
-
-
-def call_gemini(prompt: str) -> str:
+def generate(prompt: str) -> str:
+    """Call Gemini 2.0 Flash — primary and only LLM per project spec."""
     key = os.environ.get("GEMINI_API_KEY")
     if not key:
         raise RuntimeError("GEMINI_API_KEY not set")
@@ -65,14 +51,6 @@ def call_gemini(prompt: str) -> str:
         generation_config=genai.GenerationConfig(temperature=0.7, max_output_tokens=1800),
     )
     return resp.text.strip()
-
-
-def generate(prompt: str) -> str:
-    try:
-        return call_groq(prompt)
-    except Exception as exc:
-        log.warning("  Groq failed (%s), falling back to Gemini…", exc)
-        return call_gemini(prompt)
 
 
 # ─── PROMPT ───────────────────────────────────────────────────────────────────

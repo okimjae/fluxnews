@@ -152,12 +152,13 @@ pnpm biome check --write # local: auto-fix
 
 | Package | Version | Justification |
 |---|---|---|
-| **google-generativeai** | latest | Gemini 2.0 Flash — 1.5M context window, free, multimodal. |
-| **groq** | latest | Llama 3.3 70B — ultra-fast text generation, free tier. |
-| **httpx** | latest | Async HTTP client, modern replacement for `requests`. |
+| **google-generativeai** | latest | Gemini 2.0 Flash — primary LLM. 1.5M context window, free, multimodal. |
+| **httpx** | latest | Sync HTTP client, modern replacement for `requests`. |
 | **pydantic** | v2 | Agent data validation and serialization. |
 | **MoviePy** | 2.x | Video generation (shorts) from images + audio. |
 | **feedparser** | latest | RSS feed parsing. |
+
+> **Gemini 2.0 Flash** is the sole LLM used across all agents (content generator, SEO, radio script). The free tier (Google AI Studio key) covers the expected volume. Groq was evaluated but removed to reduce dependency surface and keep a single AI provider.
 
 ---
 
@@ -172,7 +173,7 @@ pnpm biome check --write # local: auto-fix
 | **Resend** | Free (3k/month) | Newsletter sending |
 | **Google Cloud TTS** | Free (1M chars) | Text-to-speech for radio |
 | **Google AI Studio** | Free | Gemini Flash API |
-| **Groq** | Free tier | Llama 3.3 API |
+| **Google AI Studio** | Free | Gemini Flash API — sole LLM |
 | **NewsAPI.org** | Free (100 req/day) | News search |
 | **OneSignal** | Free (10k subs) | Push notifications |
 
@@ -193,7 +194,7 @@ DATABASE_URL=
 
 # AI Models (free)
 GEMINI_API_KEY=
-GROQ_API_KEY=
+# GROQ_API_KEY — removed, Gemini is the sole LLM
 
 # News sources
 NEWSAPI_KEY=

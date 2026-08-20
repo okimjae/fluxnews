@@ -1,4 +1,5 @@
 import type { TenantSlug } from '@fluxnews/config';
+import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { Footer } from '@/components/Footer';
@@ -34,6 +35,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <Header tenant={tenant} />
         <main id="main-content">{children}</main>
         <Footer tenant={tenant} />
+        <Analytics />
       </body>
     </html>
   );
