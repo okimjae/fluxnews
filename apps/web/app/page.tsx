@@ -4,7 +4,7 @@ import { ArticleFeed } from '@/components/ArticleFeed';
 import { getPublishedPosts } from '@/lib/queries';
 import { getTenantConfig } from '@/tenants';
 
-export const revalidate = 3600;
+export const revalidate = 1800;
 
 export default async function HomePage() {
   const hdrs = await headers();

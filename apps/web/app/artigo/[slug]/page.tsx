@@ -9,7 +9,7 @@ import { ShareButtons } from '@/components/ShareButtons';
 import { getPostBySlug, getRelatedPosts } from '@/lib/queries';
 import { getTenantConfig } from '@/tenants';
 
-export const revalidate = 3600;
+export const revalidate = 1800;
 
 interface Props {
   params: Promise<{ slug: string }>;

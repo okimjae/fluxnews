@@ -60,20 +60,21 @@ def build_prompt(post: dict) -> str:
     persona = PERSONAS.get(post["tenant"], "Jornalista editorial independente.")
     return f"""Você é: {persona}
 
-Reescreva o artigo abaixo em português brasileiro para o nosso blog editorial.
-Regras:
-- Título: mantenha ou melhore (sem clickbait)
-- 3–5 parágrafos, cada um com 80–120 palavras
-- Linguagem fluida, sem termos genéricos de IA
-- Adicione contexto analítico próprio
-- Finalize com perspectiva editorial
-- Retorne SOMENTE o artigo em texto corrido, sem marcações
+O artigo abaixo pode estar em inglês, espanhol ou português. Independente do idioma de origem, produza a versão final SEMPRE em português brasileiro fluente e natural.
+
+Regras editoriais:
+- Título: mantenha a essência, melhore se possível (sem clickbait, sem ALL CAPS)
+- 3–5 parágrafos de 80–120 palavras cada
+- Linguagem fluida — proibido frases genéricas de IA ("vale ressaltar", "no contexto atual")
+- Adicione contexto analítico relevante para o público brasileiro
+- Finalize com perspectiva editorial própria
+- Retorne SOMENTE o artigo final em texto corrido, sem títulos, sem marcações, sem prefácio
 
 TÍTULO ORIGINAL: {post['title']}
-CONTEÚDO ORIGINAL:
+CONTEÚDO ORIGINAL ({len(post['content'] or '')} chars):
 {(post['content'] or '')[:2000]}
 
-ARTIGO REESCRITO:"""
+ARTIGO EM PORTUGUÊS BRASILEIRO:"""
 
 
 # ─── MAIN ─────────────────────────────────────────────────────────────────────
@@ -86,25 +87,27 @@ def main() -> None:
 
     log.info("🤖 Content Generator starting (tenant=%s, limit=%d)", args.tenant or "all", args.limit)
 
-    with get_db() as conn:
-        query = "SELECT * FROM posts WHERE status = 'draft'"
-        params: list = []
-        if args.tenant:
-            query += " AND tenant = %s"
-            params.append(args.tenant)
-        query += " ORDER BY created_at ASC LIMIT %s"
-        params.append(args.limit)
-
-        drafts = conn.execute(query, params).fetchall()
-
-    if not drafts:
-        log.info("No draft posts found.")
-        return
-
-    log.info("Found %d drafts to process.", len(drafts))
-    processed = failed = 0
+    tenants = [args.tenant] if args.tenant else list(PERSONAS.keys())
 
     with get_db() as conn:
+        drafts = []
+        for t in tenants:
+            rows = conn.execute(
+                "SELECT id, tenant, title, content, status, created_at FROM posts "
+                "WHERE status = 'draft' AND tenant = %s "
+                "ORDER BY created_at DESC LIMIT %s",
+                [t, args.limit],
+                prepare=False,
+            ).fetchall()
+            drafts.extend(rows)
+
+        if not drafts:
+            log.info("No draft posts found.")
+            return
+
+        log.info("Found %d drafts to process.", len(drafts))
+        processed = failed = 0
+
         for post in drafts:
             log.info("\n[%s] \"%s\"", post["tenant"], post["title"][:60])
             try:
@@ -116,6 +119,7 @@ def main() -> None:
                     WHERE id = %s
                     """,
                     [content, datetime.now(timezone.utc), post["id"]],
+                    prepare=False,
                 )
                 conn.commit()
                 log.info("  ✓ Published (%d chars)", len(content))
@@ -126,7 +130,7 @@ def main() -> None:
 
             time.sleep(0.5)  # rate limiting
 
-    log.info("\n✅ Done. %d published, %d failed.", processed, failed)
+        log.info("\n✅ Done. %d published, %d failed.", processed, failed)
 
 
 if __name__ == "__main__":

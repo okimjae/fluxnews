@@ -1,0 +1,37 @@
+name: News Fetch (every 4h)
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'   # a cada 4h — 00:00, 04:00, 08:00, 12:00, 16:00, 20:00 UTC
+  workflow_dispatch:
+    inputs:
+      tenant:
+        description: 'Tenant específico (vazio = todos)'
+        required: false
+        default: ''
+
+jobs:
+  fetch:
+    name: Fetch RSS + NewsAPI
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL:  ${{ secrets.DATABASE_URL }}
+      NEWSAPI_KEY:   ${{ secrets.NEWSAPI_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install uv + deps
+        run: |
+          pip install uv
+          uv pip install --system feedparser httpx psycopg[binary] python-dotenv
+
+      - name: RSS Fetcher
+        run: python agents/rss_fetcher.py ${{ inputs.tenant && format('--tenant={0}', inputs.tenant) || '' }}
+
+      - name: NewsAPI Fetcher
+        run: python agents/newsapi_fetcher.py ${{ inputs.tenant && format('--tenant={0}', inputs.tenant) || '' }}
