@@ -1,0 +1,20 @@
+{
+  "name": "@fluxnews/agents",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "rss": "tsx src/rss-fetcher.ts",
+    "newsapi": "tsx src/newsapi-fetcher.ts",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fluxnews/db": "workspace:*",
+    "rss-parser": "^3.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
