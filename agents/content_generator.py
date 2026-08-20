@@ -16,7 +16,8 @@ import time
 from datetime import datetime, timezone
 
 from dotenv import load_dotenv
-import google.generativeai as genai
+from google import genai
+from google.genai import types as genai_types
 
 from shared.db import get_db
 
@@ -44,11 +45,11 @@ def generate(prompt: str) -> str:
     key = os.environ.get("GEMINI_API_KEY")
     if not key:
         raise RuntimeError("GEMINI_API_KEY not set")
-    genai.configure(api_key=key)
-    model = genai.GenerativeModel("gemini-2.0-flash")
-    resp = model.generate_content(
-        prompt,
-        generation_config=genai.GenerationConfig(temperature=0.7, max_output_tokens=1800),
+    client = genai.Client(api_key=key)
+    resp = client.models.generate_content(
+        model="gemini-3.6-flash",
+        contents=prompt,
+        config=genai_types.GenerateContentConfig(temperature=0.7, max_output_tokens=1800),
     )
     return resp.text.strip()
 
@@ -86,7 +87,7 @@ def main() -> None:
     log.info("🤖 Content Generator starting (tenant=%s, limit=%d)", args.tenant or "all", args.limit)
 
     with get_db() as conn:
-        query = "SELECT * FROM posts WHERE status = 'draft' AND published_at IS NULL"
+        query = "SELECT * FROM posts WHERE status = 'draft'"
         params: list = []
         if args.tenant:
             query += " AND tenant = %s"

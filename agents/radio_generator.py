@@ -68,7 +68,7 @@ CONTEÚDO: {(post['content'] or '')[:1500]}
 
 ROTEIRO:"""
 
-    model = genai.GenerativeModel("gemini-2.0-flash")
+    model = genai.GenerativeModel("gemini-3.6-flash")
     resp = model.generate_content(
         prompt,
         generation_config=genai.GenerationConfig(temperature=0.75, max_output_tokens=600),
