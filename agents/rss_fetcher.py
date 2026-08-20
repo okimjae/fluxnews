@@ -30,13 +30,14 @@ def fetch_active_sources(conn, tenant: str | None) -> list[dict]:
     if tenant:
         query += " AND tenant = %s"
         params.append(tenant)
-    return conn.execute(query, params).fetchall()
+    return conn.execute(query, params, prepare=False).fetchall()
 
 
 def existing_source_urls(conn, tenant: str) -> set[str]:
     rows = conn.execute(
         "SELECT source_url FROM posts WHERE tenant = %s AND source_url IS NOT NULL",
         [tenant],
+        prepare=False,
     ).fetchall()
     return {r["source_url"] for r in rows}
 
@@ -91,15 +92,18 @@ def process_feed(conn, source: dict) -> tuple[int, int]:
                     feed.feed.get("title", source["label"]), author,
                     url, pub_date,
                 ],
+                prepare=False,
             )
             seen.add(url)
             inserted += 1
         except Exception as exc:
             log.error("  ✗ Insert failed for '%s': %s", title[:50], exc)
+            conn.rollback()
 
     conn.execute(
         "UPDATE sources SET last_fetched_at = NOW() WHERE id = %s",
         [source["id"]],
+        prepare=False,
     )
     conn.commit()
     log.info("  ✓ %d inserted, %d skipped", inserted, skipped)
