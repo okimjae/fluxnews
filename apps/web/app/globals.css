@@ -61,7 +61,7 @@
 [data-tenant="cripto"]     { --color-accent: #F7931A; --color-on-accent: #000000; }
 [data-tenant="saude"]      { --color-accent: #00A878; --color-on-accent: #FFFFFF; }
 [data-tenant="tech"]       { --color-accent: #6366F1; --color-on-accent: #FFFFFF; }
-[data-tenant="financas"]   { --color-accent: #22C55E; --color-on-accent: #000000; }
+[data-tenant="financas"]   { --color-accent: #1E6B4F; --color-on-accent: #FFFFFF; }
 [data-tenant="games"]      { --color-accent: #E040FB; --color-on-accent: #000000; }
 [data-tenant="esportes"]   { --color-accent: #E63946; --color-on-accent: #FFFFFF; }
 [data-tenant="streaming"]  { --color-accent: #FF3B30; --color-on-accent: #FFFFFF; }
@@ -82,7 +82,7 @@ body {
 
 /* ─── LAYOUT ─────────────────────────────────────────────────── */
 .px-page  { padding-inline: clamp(1.25rem, 5vw, 2.5rem); }
-.max-page { max-width: 1360px; margin-inline: auto; }
+.max-page { max-width: 1280px; margin-inline: auto; }
 
 /* ─── TYPOGRAPHY UTILITIES ───────────────────────────────────── */
 .text-hero    { font-size: clamp(2.25rem, 5.5vw, 4rem);   line-height: 1.1; letter-spacing: -0.02em; }

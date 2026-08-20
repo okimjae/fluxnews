@@ -68,9 +68,9 @@ export default async function RadioPage() {
 
           <AudioPlayer episodes={episodes} />
 
-          {/* Mid-content rectangle ad */}
+          {/* Mid-content leaderboard */}
           <div className="flex justify-center my-8">
-            <AdSlot size="rectangle" />
+            <AdSlot size="leaderboard" />
           </div>
 
           {/* Bottom leaderboard */}
@@ -107,7 +107,9 @@ export default async function RadioPage() {
             </a>
           </div>
 
-          <AdSlot size="rectangle" />
+          <div className="hidden lg:block">
+            <AdSlot size="rectangle" />
+          </div>
         </aside>
       </div>
     </div>
