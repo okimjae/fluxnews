@@ -40,12 +40,11 @@ export function AudioPlayer({ episodes }: AudioPlayerProps) {
     <div>
       {/* Sticky player */}
       {current && (
-        <div className="sticky top-16 z-10 bg-surface border border-border rounded-card p-4 mb-6 flex items-center gap-4 shadow-[0_4px_24px_rgba(0,0,0,0.08)]">
+        <div className="card sticky top-16 z-10 p-4 mb-6 flex items-center gap-4">
           <button
             type="button"
             onClick={toggle}
-            className="w-[40px] h-[40px] rounded-full bg-accent border-0 cursor-pointer flex items-center justify-center shrink-0 text-on-accent text-base"
-            style={{ transition: 'opacity 200ms' }}
+            className="w-10 h-10 rounded-full bg-accent text-on-accent border-0 cursor-pointer flex items-center justify-center shrink-0 text-base transition-opacity duration-200"
             aria-label={playing ? 'Pausar' : 'Tocar'}
           >
             {playing ? '⏸' : '▶'}
@@ -67,26 +66,9 @@ export function AudioPlayer({ episodes }: AudioPlayerProps) {
             key={ep.id}
             type="button"
             onClick={() => play(ep)}
-            className="flex items-center gap-4 p-4 rounded-card cursor-pointer text-left w-full"
-            style={{
-              background:
-                current?.id === ep.id
-                  ? 'color-mix(in srgb, var(--color-accent) 8%, var(--color-surface))'
-                  : 'var(--color-surface)',
-              border: `1px solid ${
-                current?.id === ep.id
-                  ? 'color-mix(in srgb, var(--color-accent) 40%, var(--color-border))'
-                  : 'var(--color-border)'
-              }`,
-              transition: 'border-color 200ms, background 200ms',
-            }}
+            className={`ep-btn ${current?.id === ep.id ? 'ep-btn-active' : ''} flex items-center gap-4 p-4 cursor-pointer text-left w-full`}
           >
-            <div
-              className="w-[36px] h-[36px] rounded-full flex items-center justify-center shrink-0 text-sm text-accent"
-              style={{
-                background: 'color-mix(in srgb, var(--color-accent) 15%, var(--color-surface))',
-              }}
-            >
+            <div className="ep-icon w-9 h-9 rounded-full flex items-center justify-center shrink-0 text-sm text-accent">
               {current?.id === ep.id && playing ? '⏸' : '▶'}
             </div>
             <div className="flex-1 min-w-0">

@@ -11,70 +11,63 @@ interface Post {
 
 interface ArticleCardProps {
   post: Post;
-  variant: 'hero' | 'card';
+  variant: 'hero' | 'card' | 'secondary';
+  index?: number;
 }
 
-export function ArticleCard({ post, variant }: ArticleCardProps) {
+export function ArticleCard({ post, variant, index }: ArticleCardProps) {
   const href = post.slug ? `/artigo/${post.slug}` : '#';
-
-  if (variant === 'hero') return <HeroArticle post={post} href={href} />;
+  if (variant === 'hero') return <HeroArticle post={post} href={href} index={index ?? 1} />;
+  if (variant === 'secondary') return <SecondaryCard post={post} href={href} />;
   return <GridCard post={post} href={href} />;
 }
 
-function HeroArticle({ post, href }: { post: Post; href: string }) {
+function HeroArticle({ post, href, index }: { post: Post; href: string; index: number }) {
+  const num = String(index).padStart(2, '0');
   return (
-    <a
-      href={href}
-      className="block no-underline rounded-card overflow-hidden relative border border-border hero-card"
-    >
-      {/* Image placeholder — replaced by real image once pipeline is live */}
-      <div
-        className="aspect-[21/9] w-full relative"
-        style={{
-          background: `
-            radial-gradient(ellipse 55% 80% at 25% 75%, color-mix(in srgb, var(--color-accent) 40%, transparent), transparent 70%),
-            radial-gradient(ellipse 35% 55% at 78% 20%, color-mix(in srgb, var(--color-accent) 22%, transparent), transparent 65%),
-            radial-gradient(ellipse 60% 60% at 60% 50%, color-mix(in srgb, var(--color-accent) 10%, transparent), transparent 70%),
-            #141619
-          `,
-          transition: 'background 250ms ease',
-        }}
-      >
-        {/* Dark gradient overlay */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.3) 55%, transparent 100%)',
-          }}
-        />
+    <a href={href} className="group block no-underline">
+      <div className="hero-card grid lg:grid-cols-[3fr_2fr] border border-border rounded-card overflow-hidden bg-surface">
+        <div className="p-8 sm:p-10 lg:p-14 flex flex-col gap-6 justify-center min-h-[280px] lg:min-h-[360px]">
+          <span className="badge self-start">{post.category}</span>
 
-        {/* Content */}
-        <div
-          className="absolute bottom-0 left-0 right-0"
-          style={{ padding: 'clamp(1.25rem, 4%, 2rem)' }}
-        >
-          <div
-            className="badge mb-3"
-            style={{
-              background: 'color-mix(in srgb, var(--color-accent) 18%, rgba(255,255,255,0.08))',
-              color: '#fff',
-              borderColor: 'rgba(255,255,255,0.2)',
-            }}
-          >
-            {post.category}
-          </div>
-
-          <h1 className="font-display text-[clamp(1.5rem,3.5vw,2.5rem)] leading-[1.15] text-white mb-3 text-balance">
+          <h1 className="font-display text-hero text-text text-balance leading-[1.08]">
             {post.title}
           </h1>
 
-          <p className="font-display italic text-[clamp(0.9rem,1.5vw,1.0625rem)] leading-[1.55] text-white/75 mb-4 max-w-[65ch]">
+          <p className="font-display italic text-text-2 text-[1.125rem] leading-[1.7] max-w-[52ch]">
             {post.excerpt}
           </p>
 
-          <MetaRow author={post.author} publishedAt={post.publishedAt} light />
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <MetaRow author={post.author} publishedAt={post.publishedAt} />
+            <span className="font-mono text-[0.75rem] text-accent tracking-[0.04em] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              Ler artigo →
+            </span>
+          </div>
         </div>
+
+        <div className="img-dot-grid hidden lg:flex items-end justify-end p-8 min-h-[360px]">
+          <span className="article-number" aria-hidden="true">
+            {num}
+          </span>
+        </div>
+      </div>
+    </a>
+  );
+}
+
+function SecondaryCard({ post, href }: { post: Post; href: string }) {
+  return (
+    <a href={href} className="secondary-card no-underline group">
+      {/* Dot-grid thumbnail */}
+      <div className="img-dot-grid shrink-0 w-[72px] h-[72px] rounded-sm" aria-hidden="true" />
+
+      <div className="flex-1 min-w-0">
+        <span className="badge mb-2 inline-flex">{post.category}</span>
+        <h3 className="secondary-card-title text-[0.9375rem] font-semibold text-text leading-[1.35] line-clamp-2 mb-2">
+          {post.title}
+        </h3>
+        <MetaRow author={post.author} publishedAt={post.publishedAt} readTimeMinutes={4} compact />
       </div>
     </a>
   );
@@ -82,64 +75,18 @@ function HeroArticle({ post, href }: { post: Post; href: string }) {
 
 function GridCard({ post, href }: { post: Post; href: string }) {
   return (
-    <a
-      href={href}
-      className="block no-underline bg-surface border border-border rounded-card overflow-hidden card-link"
-    >
-      {/* Image */}
-      <div
-        className="aspect-[16/9] relative"
-        style={{
-          background: `
-            radial-gradient(ellipse 50% 70% at 20% 80%, color-mix(in srgb, var(--color-accent) 30%, transparent), transparent 65%),
-            radial-gradient(ellipse 40% 50% at 75% 25%, color-mix(in srgb, var(--color-accent) 18%, transparent), transparent 60%),
-            #141619
-          `,
-          transition: 'background 250ms ease',
-        }}
-      >
-        <div className="absolute top-[0.625rem] left-[0.625rem]">
-          <span
-            className="badge"
-            style={{
-              background: 'color-mix(in srgb, var(--color-accent) 18%, rgba(255,255,255,0.08))',
-              color: '#fff',
-              borderColor: 'rgba(255,255,255,0.2)',
-            }}
-          >
-            {post.category}
-          </span>
-        </div>
-      </div>
+    <a href={href} className="card-text card block no-underline p-6 group">
+      <span className="badge mb-5 inline-flex">{post.category}</span>
 
-      {/* Body */}
-      <div className="pt-4 px-[1.125rem] pb-[1.125rem]">
-        <h2
-          className="font-display text-[1.0625rem] leading-[1.35] text-text mb-2 text-balance"
-          style={{
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-          }}
-        >
-          {post.title}
-        </h2>
+      <h2 className="font-display text-[1.0625rem] tracking-[-0.01em] leading-[1.35] text-text mb-3 text-balance line-clamp-3">
+        {post.title}
+      </h2>
 
-        <p
-          className="text-[0.8125rem] text-text-2 leading-[1.55] mb-[0.875rem]"
-          style={{
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-          }}
-        >
-          {post.excerpt}
-        </p>
+      <p className="text-[0.8125rem] text-text-2 leading-[1.65] mb-5 line-clamp-2">
+        {post.excerpt}
+      </p>
 
-        <MetaRow author={post.author} publishedAt={post.publishedAt} readTimeMinutes={3} />
-      </div>
+      <MetaRow author={post.author} publishedAt={post.publishedAt} readTimeMinutes={4} />
     </a>
   );
 }

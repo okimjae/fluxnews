@@ -48,13 +48,13 @@ export default async function CategoryPage({ params }: Props) {
   const articles = getMockArticles(slug, tenant);
 
   return (
-    <div className="max-w-[1280px] mx-auto px-page py-10">
+    <div className="max-page px-page py-10">
       {/* Breadcrumb */}
       <nav
         aria-label="Breadcrumb"
-        className="flex gap-2 text-[0.8125rem] text-text-m mb-8 items-center"
+        className="flex gap-2 text-[0.8125rem] text-text-m mb-10 items-center"
       >
-        <a href="/" className="text-text-m no-underline">
+        <a href="/" className="text-text-m no-underline hover:text-text-2 transition-colors">
           Início
         </a>
         <span aria-hidden>›</span>
@@ -62,40 +62,27 @@ export default async function CategoryPage({ params }: Props) {
       </nav>
 
       {/* Header */}
-      <div className="mb-10">
-        <span className="badge mb-3">Categoria</span>
-        <h1 className="font-display text-[clamp(1.75rem,4vw,2.5rem)] font-bold leading-[1.2] text-text mb-2">
-          {label}
-        </h1>
-        <p className="text-[0.9375rem] text-text-2">
-          {articles.length} artigos · {config.name}
-        </p>
+      <div className="mb-10 pb-8 border-b border-border flex items-end justify-between gap-6 flex-wrap">
+        <div>
+          <span className="badge mb-4">{config.niche}</span>
+          <h1 className="font-display text-title text-text text-balance">{label}</h1>
+        </div>
+        <p className="font-mono text-[0.75rem] text-text-m">{articles.length} artigos</p>
       </div>
 
-      {/* Divider */}
-      <div className="h-px bg-border mb-8" />
-
       {/* Article grid */}
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {articles.map((article) => (
           <ArticleCard key={article.slug} post={article} variant="card" />
         ))}
       </div>
 
       {/* Pagination placeholder */}
-      <div className="mt-12 flex justify-center gap-2">
-        <button
-          type="button"
-          disabled
-          className="px-4 py-2 text-sm border border-border rounded-sm bg-surface text-text-m cursor-not-allowed opacity-50"
-        >
+      <div className="mt-14 flex justify-center gap-2">
+        <button type="button" disabled className="btn btn-secondary opacity-40 cursor-not-allowed">
           ← Anterior
         </button>
-        <button
-          type="button"
-          disabled
-          className="px-4 py-2 text-sm border border-border rounded-sm bg-surface text-text-m cursor-not-allowed opacity-50"
-        >
+        <button type="button" disabled className="btn btn-secondary opacity-40 cursor-not-allowed">
           Próxima →
         </button>
       </div>
