@@ -73,7 +73,7 @@ export default async function CategoryPage({ params }: Props) {
                     <AdSlot size="leaderboard" />
                   </div>
                 )}
-                <ArticleCard post={article} variant="card" />
+                <ArticleCard post={article} variant="card" tenant={tenant} />
               </Fragment>
             ))}
           </div>
@@ -86,7 +86,7 @@ export default async function CategoryPage({ params }: Props) {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {moreArticles.map((article) => (
-                  <ArticleCard key={article.slug} post={article} variant="card" />
+                  <ArticleCard key={article.slug} post={article} variant="card" tenant={tenant} />
                 ))}
               </div>
             </>
@@ -95,7 +95,7 @@ export default async function CategoryPage({ params }: Props) {
 
         {/* Sidebar */}
         <aside className="space-y-8 lg:sticky lg:top-[var(--header-h)]">
-          <SidebarMostRead posts={articles} />
+          <SidebarMostRead posts={articles} tenant={tenant} />
           <div className="hidden lg:block">
             <AdSlot size="rectangle" />
           </div>

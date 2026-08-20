@@ -13,10 +13,12 @@ interface ArticleCardProps {
   post: Post;
   variant: 'hero' | 'card' | 'secondary';
   index?: number;
+  tenant?: string;
 }
 
-export function ArticleCard({ post, variant, index }: ArticleCardProps) {
-  const href = post.slug ? `/artigo/${post.slug}` : '#';
+export function ArticleCard({ post, variant, index, tenant }: ArticleCardProps) {
+  const tenantQuery = tenant ? `?tenant=${tenant}` : '';
+  const href = post.slug ? `/artigo/${post.slug}${tenantQuery}` : '#';
   if (variant === 'hero') return <HeroArticle post={post} href={href} index={index ?? 1} />;
   if (variant === 'secondary') return <SecondaryCard post={post} href={href} />;
   return <GridCard post={post} href={href} />;

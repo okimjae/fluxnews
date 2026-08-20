@@ -18,14 +18,20 @@ interface ArticleFeedProps {
   posts: Post[];
   tenant: TenantSlug;
   config: TenantConfig;
+  page?: number;
+  totalPages?: number;
 }
 
-export function ArticleFeed({ posts, config }: ArticleFeedProps) {
+export function ArticleFeed({ posts, tenant, config, page = 1, totalPages = 1 }: ArticleFeedProps) {
   const [hero, ...rest] = posts;
   if (!hero) return null;
 
   const secondaryPosts = rest.slice(0, 2);
   const gridPosts = rest.slice(2);
+
+  const tenantQuery = `?tenant=${tenant}`;
+  const prevPage = page > 1 ? `/${page > 2 ? `page/${page - 1}` : ''}${tenantQuery}` : null;
+  const nextPage = page < totalPages ? `/page/${page + 1}${tenantQuery}` : null;
 
   const month = new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
 
@@ -44,14 +50,14 @@ export function ArticleFeed({ posts, config }: ArticleFeedProps) {
 
       {/* Hero */}
       <div className="animate-fade-up">
-        <ArticleCard post={hero} variant="hero" index={1} />
+        <ArticleCard post={hero} variant="hero" index={1} tenant={tenant} />
       </div>
 
       {/* Secondary stack below hero */}
       {secondaryPosts.length > 0 && (
         <div className="mt-6 stagger-1">
           {secondaryPosts.map((post) => (
-            <ArticleCard key={post.slug ?? post.title} post={post} variant="secondary" />
+            <ArticleCard key={post.slug ?? post.title} post={post} variant="secondary" tenant={tenant} />
           ))}
         </div>
       )}
@@ -89,7 +95,7 @@ export function ArticleFeed({ posts, config }: ArticleFeedProps) {
                       <AdSlot size="leaderboard" />
                     </div>
                   )}
-                  <ArticleCard post={post} variant="card" />
+                  <ArticleCard post={post} variant="card" tenant={tenant} />
                 </Fragment>
               ))}
             </div>
@@ -97,7 +103,7 @@ export function ArticleFeed({ posts, config }: ArticleFeedProps) {
 
           {/* Sidebar */}
           <aside className="space-y-8 lg:sticky lg:top-[var(--header-h)] pt-0">
-            <SidebarMostRead posts={posts} />
+            <SidebarMostRead posts={posts} tenant={tenant} />
             <div className="hidden lg:block">
               <AdSlot size="rectangle" />
             </div>
@@ -110,14 +116,47 @@ export function ArticleFeed({ posts, config }: ArticleFeedProps) {
         <NewsletterWidget tenantName={config.name} />
       </div>
 
-      {/* Footer attribution */}
+      {/* Pagination + footer */}
       <div className="mt-8 pt-6 border-t border-border flex items-center justify-between flex-wrap gap-3">
         <p className="text-[0.75rem] text-text-m">
           Curadoria editorial ·{' '}
           <span className="text-text-2 font-medium">{config.author.name}</span>
         </p>
+
+        {totalPages > 1 && (
+          <nav aria-label="Paginação" className="flex items-center gap-2">
+            {prevPage ? (
+              <a
+                href={prevPage}
+                className="font-mono text-[0.6875rem] uppercase tracking-[0.08em] text-text-m no-underline hover:text-text-2 transition-colors"
+              >
+                ← Anterior
+              </a>
+            ) : (
+              <span className="font-mono text-[0.6875rem] uppercase tracking-[0.08em] text-text-m opacity-30">
+                ← Anterior
+              </span>
+            )}
+            <span className="font-mono text-[0.6875rem] text-text-m px-2">
+              {page} / {totalPages}
+            </span>
+            {nextPage ? (
+              <a
+                href={nextPage}
+                className="font-mono text-[0.6875rem] uppercase tracking-[0.08em] text-text-m no-underline hover:text-text-2 transition-colors"
+              >
+                Próxima →
+              </a>
+            ) : (
+              <span className="font-mono text-[0.6875rem] uppercase tracking-[0.08em] text-text-m opacity-30">
+                Próxima →
+              </span>
+            )}
+          </nav>
+        )}
+
         <a
-          href="/newsletter"
+          href={`/newsletter${tenantQuery}`}
           className="font-mono text-[0.6875rem] uppercase tracking-[0.1em] text-accent no-underline hover:opacity-70 transition-opacity"
         >
           Receber digest semanal →

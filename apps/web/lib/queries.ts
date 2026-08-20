@@ -3,13 +3,28 @@ import { and, count, desc, eq, ilike, isNotNull, or } from 'drizzle-orm';
 
 export type PostRow = typeof posts.$inferSelect;
 
-export async function getPublishedPosts(tenant: string, limit = 20): Promise<PostRow[]> {
+export const PAGE_SIZE = 12;
+
+export async function getPublishedPosts(
+  tenant: string,
+  limit = PAGE_SIZE,
+  offset = 0,
+): Promise<PostRow[]> {
   return db
     .select()
     .from(posts)
     .where(and(eq(posts.tenant, tenant), eq(posts.status, 'published')))
     .orderBy(desc(posts.publishedAt))
-    .limit(limit);
+    .limit(limit)
+    .offset(offset);
+}
+
+export async function countPublishedPosts(tenant: string): Promise<number> {
+  const rows = await db
+    .select({ n: count() })
+    .from(posts)
+    .where(and(eq(posts.tenant, tenant), eq(posts.status, 'published')));
+  return rows[0]?.n ?? 0;
 }
 
 export async function getPostBySlug(tenant: string, slug: string): Promise<PostRow | null> {

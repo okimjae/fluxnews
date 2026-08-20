@@ -7,9 +7,11 @@ interface Post {
 interface SidebarMostReadProps {
   posts: Post[];
   label?: string;
+  tenant?: string;
 }
 
-export function SidebarMostRead({ posts, label = 'Mais Lidos' }: SidebarMostReadProps) {
+export function SidebarMostRead({ posts, label = 'Mais Lidos', tenant }: SidebarMostReadProps) {
+  const tenantQuery = tenant ? `?tenant=${tenant}` : '';
   return (
     <aside>
       <div className="section-label">
@@ -29,7 +31,7 @@ export function SidebarMostRead({ posts, label = 'Mais Lidos' }: SidebarMostRead
             </span>
             <div className="min-w-0">
               <a
-                href={post.slug ? `/artigo/${post.slug}` : '#'}
+                href={post.slug ? `/artigo/${post.slug}${tenantQuery}` : '#'}
                 className="block text-[0.875rem] font-medium text-text-2 no-underline hover:text-text line-clamp-2 transition-colors leading-[1.4] mb-1"
               >
                 {post.title}

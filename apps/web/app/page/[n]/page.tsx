@@ -1,18 +1,24 @@
 import type { TenantSlug } from '@fluxnews/config';
 import { headers } from 'next/headers';
+import { notFound, redirect } from 'next/navigation';
 import { ArticleFeed } from '@/components/ArticleFeed';
 import { PAGE_SIZE, countPublishedPosts, getPublishedPosts } from '@/lib/queries';
 import { getTenantConfig } from '@/tenants';
 
 export const revalidate = 1800;
 
-interface HomePageProps {
+interface Props {
+  params: Promise<{ n: string }>;
   searchParams: Promise<Record<string, string>>;
 }
 
-export default async function HomePage({ searchParams }: HomePageProps) {
+export default async function PaginatedPage({ params, searchParams }: Props) {
+  const { n } = await params;
   const sp = await searchParams;
-  const page = Math.max(1, Number(sp.page ?? '1') || 1);
+  const page = Number(n);
+
+  if (!Number.isInteger(page) || page < 1) notFound();
+  if (page === 1) redirect(`/?tenant=${sp.tenant ?? 'cripto'}`);
 
   const hdrs = await headers();
   const tenant = (hdrs.get('x-tenant') ?? 'cripto') as TenantSlug;
@@ -24,6 +30,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   ]);
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  if (page > totalPages) notFound();
 
   const posts = dbPosts.map((p) => ({
     title: p.title,
