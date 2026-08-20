@@ -55,7 +55,7 @@ export function MobileNav({ links }: MobileNavProps) {
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 z-40 bg-bg/80 backdrop-blur-sm"
+            className="fixed inset-0 z-40 nav-backdrop"
             onClick={() => setOpen(false)}
             aria-hidden="true"
           />

@@ -1,4 +1,5 @@
 import type { TenantConfig, TenantSlug } from '@fluxnews/config';
+import { Fragment } from 'react';
 import { AdSlot } from './AdSlot';
 import { ArticleCard } from './ArticleCard';
 import { NewsletterWidget } from './NewsletterWidget';
@@ -23,8 +24,8 @@ export function ArticleFeed({ posts, config }: ArticleFeedProps) {
   const [hero, ...rest] = posts;
   if (!hero) return null;
 
-  const secondaryPosts = rest.slice(0, 3);
-  const gridPosts = rest.slice(3);
+  const secondaryPosts = rest.slice(0, 2);
+  const gridPosts = rest.slice(2);
 
   const month = new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
 
@@ -56,7 +57,7 @@ export function ArticleFeed({ posts, config }: ArticleFeedProps) {
       )}
 
       {/* Ad leaderboard between sections */}
-      <div className="flex justify-center my-10">
+      <div className="flex justify-center my-6 sm:my-10">
         <AdSlot size="leaderboard" />
       </div>
 
@@ -81,8 +82,15 @@ export function ArticleFeed({ posts, config }: ArticleFeedProps) {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              {gridPosts.map((post) => (
-                <ArticleCard key={post.slug ?? post.title} post={post} variant="card" />
+              {gridPosts.map((post, i) => (
+                <Fragment key={post.slug ?? post.title}>
+                  {i === 2 && gridPosts.length > 3 && (
+                    <div className="col-span-full flex justify-center my-4 sm:my-6">
+                      <AdSlot size="leaderboard" />
+                    </div>
+                  )}
+                  <ArticleCard post={post} variant="card" />
+                </Fragment>
               ))}
             </div>
           </div>
@@ -90,20 +98,22 @@ export function ArticleFeed({ posts, config }: ArticleFeedProps) {
           {/* Sidebar */}
           <aside className="space-y-8 lg:sticky lg:top-[var(--header-h)] pt-0">
             <SidebarMostRead posts={posts} />
-            <AdSlot size="rectangle" />
+            <div className="hidden lg:block">
+              <AdSlot size="rectangle" />
+            </div>
           </aside>
         </div>
       )}
 
       {/* Newsletter inline CTA */}
-      <div className="mt-14">
+      <div className="mt-10">
         <NewsletterWidget tenantName={config.name} />
       </div>
 
       {/* Footer attribution */}
-      <div className="mt-10 pt-6 border-t border-border flex items-center justify-between flex-wrap gap-3">
+      <div className="mt-8 pt-6 border-t border-border flex items-center justify-between flex-wrap gap-3">
         <p className="text-[0.75rem] text-text-m">
-          Curado por IA · revisado por{' '}
+          Curadoria editorial ·{' '}
           <span className="text-text-2 font-medium">{config.author.name}</span>
         </p>
         <a

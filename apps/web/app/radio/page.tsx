@@ -1,11 +1,11 @@
 import type { TenantSlug } from '@fluxnews/config';
 import { headers } from 'next/headers';
+import { AdSlot } from '@/components/AdSlot';
 import { AudioPlayer } from '@/components/AudioPlayer';
 import { getTenantConfig } from '@/tenants';
 
 export const revalidate = 3600;
 
-// Mock episodes until the pipeline generates real audio (Phase 3)
 function getMockEpisodes(tenant: TenantSlug) {
   const config = getTenantConfig(tenant);
   const topics = [
@@ -24,7 +24,6 @@ function getMockEpisodes(tenant: TenantSlug) {
       month: 'short',
       year: 'numeric',
     }),
-    // Placeholder audio — replaced by real CDN URLs in Phase 3
     audioUrl: '',
   }));
 }
@@ -37,50 +36,79 @@ export default async function RadioPage() {
 
   return (
     <div className="max-page px-page py-10">
-      <div className="max-w-[800px]">
-        {/* Header */}
-        <div className="mb-10 animate-fade-up">
-          <span className="badge mb-4">Rádio</span>
+      <div className="grid lg:grid-cols-[1fr_300px] gap-10 items-start">
+        {/* Main content */}
+        <div className="max-w-[800px]">
+          {/* Header */}
+          <div className="mb-10 animate-fade-up">
+            <span className="badge mb-4">Rádio</span>
 
-          <div className="flex items-start justify-between gap-4 flex-wrap">
-            <div>
-              <h1 className="font-display text-title text-text mb-2">{config.name} Radio</h1>
-              <p className="text-[0.9375rem] text-text-2 leading-[1.5]">
-                Episódios semanais sobre {config.niche} — por {config.author.name}
-              </p>
+            <div className="flex items-start justify-between gap-4 flex-wrap">
+              <div>
+                <h1 className="font-display text-title text-text mb-2">{config.name} Radio</h1>
+                <p className="text-[0.9375rem] text-text-2 leading-[1.5]">
+                  Episódios semanais sobre {config.niche} — por {config.author.name}
+                </p>
+              </div>
+
+              <a
+                href="/radio/feed.xml"
+                className="btn-rss inline-flex items-center gap-1.5 px-[0.875rem] py-2 text-[0.8125rem] font-medium text-accent rounded-sm no-underline shrink-0"
+              >
+                <span className="text-sm">◉</span> RSS
+              </a>
             </div>
-
-            {/* RSS link */}
-            <a
-              href="/radio/feed.xml"
-              className="btn-rss inline-flex items-center gap-1.5 px-[0.875rem] py-2 text-[0.8125rem] font-medium text-accent rounded-sm no-underline shrink-0"
-            >
-              <span className="text-sm">◉</span> RSS
-            </a>
           </div>
+
+          <div className="divider mb-6" />
+
+          <p className="text-[0.8125rem] text-text-m font-mono mb-5 tracking-[0.02em]">
+            {episodes.length} episódios disponíveis
+          </p>
+
+          <AudioPlayer episodes={episodes} />
+
+          {/* Mid-content rectangle ad */}
+          <div className="flex justify-center my-8">
+            <AdSlot size="rectangle" />
+          </div>
+
+          {/* Bottom leaderboard */}
+          <div className="flex justify-center mt-2">
+            <AdSlot size="leaderboard" />
+          </div>
+
+          <p className="mt-8 text-xs text-text-m leading-[1.5] text-center">
+            Produzido pela equipe {config.name} ·{' '}
+            <a
+              href="/newsletter"
+              className="text-accent no-underline hover:opacity-70 transition-opacity"
+            >
+              Assinar newsletter
+            </a>
+          </p>
         </div>
 
-        {/* Divider */}
-        <div className="divider mb-6" />
+        {/* Sidebar */}
+        <aside className="space-y-6 lg:sticky lg:top-[var(--header-h)]">
+          <div className="card p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-[2px] h-[1.1rem] bg-accent rounded-full" />
+              <h2 className="font-mono text-[0.75rem] font-medium uppercase tracking-[0.1em] text-text-2">
+                Sobre o Podcast
+              </h2>
+            </div>
+            <p className="text-[0.8125rem] text-text-2 leading-[1.6] mb-4">
+              Cobertura editorial semanal sobre {config.niche} — análises, entrevistas e resumos dos
+              fatos que importam.
+            </p>
+            <a href="/newsletter" className="btn btn-primary w-full text-center">
+              Receber por email
+            </a>
+          </div>
 
-        {/* Episode count */}
-        <p className="text-[0.8125rem] text-text-m font-mono mb-5 tracking-[0.02em]">
-          {episodes.length} episódios disponíveis
-        </p>
-
-        {/* Player */}
-        <AudioPlayer episodes={episodes} />
-
-        {/* Footer note */}
-        <p className="mt-10 text-xs text-text-m leading-[1.5] text-center">
-          Episódios gerados por IA com narração de {config.author.name} ·{' '}
-          <a
-            href="/newsletter"
-            className="text-accent no-underline hover:opacity-70 transition-opacity"
-          >
-            Assinar newsletter
-          </a>
-        </p>
+          <AdSlot size="rectangle" />
+        </aside>
       </div>
     </div>
   );

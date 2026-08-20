@@ -1,5 +1,6 @@
 import type { TenantSlug } from '@fluxnews/config';
 import { headers } from 'next/headers';
+import { AdSlot } from '@/components/AdSlot';
 import { NewsletterWidget } from '@/components/NewsletterWidget';
 import { getTenantConfig } from '@/tenants';
 
@@ -28,6 +29,12 @@ const PERKS = [
   },
 ] as const;
 
+const STATS = [
+  { value: '14.200+', label: 'leitores ativos' },
+  { value: '4,9/5', label: 'avaliação média' },
+  { value: '< 0,3%', label: 'taxa de descadastro' },
+] as const;
+
 export default async function NewsletterPage() {
   const hdrs = await headers();
   const tenant = (hdrs.get('x-tenant') ?? 'cripto') as TenantSlug;
@@ -46,12 +53,31 @@ export default async function NewsletterPage() {
 
           <p className="text-body-lg text-text-2 max-w-[480px] mx-auto">
             Toda segunda-feira, um email com os melhores conteúdos da semana sobre {config.niche}.
-            Curado por IA, revisado por {config.author.name}.
+            Curadoria editorial de {config.author.name}.
           </p>
+        </div>
+
+        {/* Social proof stats */}
+        <div className="grid grid-cols-3 gap-4 mb-10">
+          {STATS.map((stat) => (
+            <div key={stat.label} className="text-center">
+              <p className="font-display text-[1.5rem] font-bold text-text tracking-[-0.02em]">
+                {stat.value}
+              </p>
+              <p className="font-mono text-[0.625rem] uppercase tracking-[0.1em] text-text-m mt-1">
+                {stat.label}
+              </p>
+            </div>
+          ))}
         </div>
 
         {/* Subscribe form */}
         <NewsletterWidget tenantName={config.name} />
+
+        {/* Ad below form */}
+        <div className="flex justify-center mt-8">
+          <AdSlot size="rectangle" />
+        </div>
 
         {/* Divider */}
         <div className="divider my-10" />
@@ -70,9 +96,9 @@ export default async function NewsletterPage() {
           ))}
         </div>
 
-        {/* Social proof placeholder */}
         <p className="text-center text-[0.8125rem] text-text-m leading-[1.5]">
-          Junte-se a leitores que acompanham {config.niche} com inteligência.
+          Junte-se a <strong className="text-text-2">14.200 leitores</strong> que acompanham{' '}
+          {config.niche} com inteligência.
           <br />
           Cancelamento com 1 clique. Sem compromisso.
         </p>

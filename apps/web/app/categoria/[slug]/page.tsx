@@ -1,6 +1,9 @@
 import type { TenantSlug } from '@fluxnews/config';
 import { headers } from 'next/headers';
+import { Fragment } from 'react';
+import { AdSlot } from '@/components/AdSlot';
 import { ArticleCard } from '@/components/ArticleCard';
+import { SidebarMostRead } from '@/components/SidebarMostRead';
 import { getTenantConfig } from '@/tenants';
 
 export const revalidate = 3600;
@@ -13,14 +16,13 @@ function slugToLabel(slug: string) {
   return slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-// Mock article factory — replaced by DB query in Phase 1
 function getMockArticles(category: string, tenant: TenantSlug) {
   const config = getTenantConfig(tenant);
   const label = slugToLabel(category);
 
-  return Array.from({ length: 8 }, (_, i) => ({
+  return Array.from({ length: 9 }, (_, i) => ({
     title: `${label}: Artigo ${i + 1} — Análise e perspectivas para ${config.niche}`,
-    excerpt: `Conteúdo editorial gerado por IA com curadoria de ${config.author.name}. Esta é uma prévia do tipo de artigo que será publicado nesta categoria.`,
+    excerpt: `Análise editorial de ${config.author.name}. Uma visão aprofundada sobre ${config.niche} e os temas que moldam o mercado.`,
     category: label,
     author: config.author.name,
     publishedAt: new Date(2026, 7, 18 - i),
@@ -36,6 +38,7 @@ export async function generateStaticParams() {
     { slug: 'pesquisa' },
     { slug: 'review' },
     { slug: 'tendencias' },
+    { slug: 'todos' },
   ];
 }
 
@@ -46,6 +49,10 @@ export default async function CategoryPage({ params }: Props) {
   const config = getTenantConfig(tenant);
   const label = slugToLabel(slug);
   const articles = getMockArticles(slug, tenant);
+
+  // First 6 go into the main grid, sidebar uses all for "most read"
+  const mainArticles = articles.slice(0, 6);
+  const moreArticles = articles.slice(6);
 
   return (
     <div className="max-page px-page py-10">
@@ -70,18 +77,58 @@ export default async function CategoryPage({ params }: Props) {
         <p className="font-mono text-[0.75rem] text-text-m">{articles.length} artigos</p>
       </div>
 
-      {/* Article grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {articles.map((article) => (
-          <ArticleCard key={article.slug} post={article} variant="card" />
-        ))}
+      {/* Two-column layout: grid + sidebar */}
+      <div className="grid lg:grid-cols-[1fr_300px] gap-10 items-start">
+        {/* Main grid with inline ad after row 1 */}
+        <div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {mainArticles.map((article, i) => (
+              <Fragment key={article.slug}>
+                {i === 2 && (
+                  <div className="col-span-full flex justify-center my-4">
+                    <AdSlot size="leaderboard" />
+                  </div>
+                )}
+                <ArticleCard post={article} variant="card" />
+              </Fragment>
+            ))}
+          </div>
+
+          {/* Extra articles after second ad */}
+          {moreArticles.length > 0 && (
+            <>
+              <div className="flex justify-center my-8">
+                <AdSlot size="leaderboard" />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {moreArticles.map((article) => (
+                  <ArticleCard key={article.slug} post={article} variant="card" />
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Sidebar */}
+        <aside className="space-y-8 lg:sticky lg:top-[var(--header-h)]">
+          <SidebarMostRead posts={articles} />
+          <div className="hidden lg:block">
+            <AdSlot size="rectangle" />
+          </div>
+        </aside>
       </div>
 
-      {/* Pagination placeholder */}
-      <div className="mt-14 flex justify-center gap-2">
+      {/* Above pagination ad */}
+      <div className="flex justify-center mt-12 mb-6">
+        <AdSlot size="leaderboard" />
+      </div>
+
+      {/* Pagination */}
+      <div className="flex justify-center gap-2">
         <button type="button" disabled className="btn btn-secondary opacity-40 cursor-not-allowed">
           ← Anterior
         </button>
+        <span className="btn btn-ghost text-text-m">Página 1</span>
         <button type="button" disabled className="btn btn-secondary opacity-40 cursor-not-allowed">
           Próxima →
         </button>

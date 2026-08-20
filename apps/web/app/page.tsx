@@ -45,6 +45,24 @@ function getPlaceholderPosts(tenant: TenantSlug) {
         'Análise',
         'Lucas Ferreira'
       ),
+      post(
+        'On-Chain Data Reveals Whale Accumulation Pattern Not Seen Since 2020 Bull Run',
+        'Large wallets have been quietly absorbing supply for 8 weeks. Historical patterns suggest what comes next.',
+        'On-Chain',
+        'Lucas Ferreira'
+      ),
+      post(
+        'Stablecoin Supply Hits Record $230B — A Sign of Dry Powder or Permanent Shift?',
+        'Analysts are divided: is this capital waiting to enter risk assets, or a structural move away from crypto?',
+        'Análise',
+        'Lucas Ferreira'
+      ),
+      post(
+        'Bitcoin Halving Impact 12 Months Later: A Complete Data Analysis',
+        'Supply shock, miner behavior, and institutional flows — the full picture of what actually happened after the halving.',
+        'Mercado',
+        'Lucas Ferreira'
+      ),
     ],
     saude: [
       post(
@@ -69,6 +87,24 @@ function getPlaceholderPosts(tenant: TenantSlug) {
         'A Janela de Sono Perfeita: Por Que Dormir às 22h Faz Diferença Real',
         'A cronobiologia explica como o ritmo circadiano modula a qualidade do sono além do número de horas.',
         'Sono',
+        'Dra. Marina Costa'
+      ),
+      post(
+        'Suplementação de Vitamina D: Quando Vale a Pena e Quem Realmente Precisa',
+        'Revisão de 60 ensaios clínicos mostra que a suplementação beneficia apenas grupos específicos.',
+        'Suplementos',
+        'Dra. Marina Costa'
+      ),
+      post(
+        'Exercício Anaeróbico Versus Aeróbico: O Debate Que a Ciência Finalmente Resolveu',
+        'Dados de 20 anos de pesquisa mostram que a combinação importa mais do que a preferência.',
+        'Fitness',
+        'Dra. Marina Costa'
+      ),
+      post(
+        'Jejum Intermitente 16:8 vs 5:2: O Que as Novas Pesquisas Dizem Sobre Eficácia',
+        'Meta-análise de 28 estudos compara protocolos de jejum em populações com diferentes perfis metabólicos.',
+        'Nutrição',
         'Dra. Marina Costa'
       ),
     ],
@@ -97,6 +133,24 @@ function getPlaceholderPosts(tenant: TenantSlug) {
         'Open Source',
         'Rafael Santos'
       ),
+      post(
+        'Claude 5 vs GPT-5 vs Gemini 2.5 Ultra: The Benchmark That Actually Matters in 2026',
+        'We ran all three on real engineering tasks for 4 weeks. The results differ from official leaderboards.',
+        'Comparativo',
+        'Rafael Santos'
+      ),
+      post(
+        'Open Source AI Is Winning the Enterprise: Why Fortune 500s Are Ditching Proprietary APIs',
+        'Cost, data sovereignty, and customization are driving a quiet but irreversible shift.',
+        'Enterprise',
+        'Rafael Santos'
+      ),
+      post(
+        'The State of Developer Tools in 2026: What Actually Replaced GitHub Copilot',
+        'Survey of 4,500 developers reveals which tools won after the wave of AI coding assistants matured.',
+        'Tools',
+        'Rafael Santos'
+      ),
     ],
     financas: [
       post(
@@ -121,6 +175,24 @@ function getPlaceholderPosts(tenant: TenantSlug) {
         'Imposto de Renda 2026: Prazo, Novas Regras e o Que Mudou Para Investidores',
         'A Receita Federal ampliou as obrigações de declaração de criptoativos e fundos offshore.',
         'IR 2026',
+        'André Lima'
+      ),
+      post(
+        'Fundos Imobiliários Pagaram 14,2% ao Ano em 2025 — Vale Ainda em 2026?',
+        'O IFIX segue atraente, mas os riscos setoriais pedem atenção antes de aportar.',
+        'FIIs',
+        'André Lima'
+      ),
+      post(
+        'CDB, LCI ou Tesouro? Como Escolher Com a Selic a 12,25%',
+        'Comparativo prático considerando imposto de renda, liquidez e horizonte de investimento.',
+        'Renda Fixa',
+        'André Lima'
+      ),
+      post(
+        'Reserva de Emergência em 2026: Quanto Guardar e Onde Deixar Rendendo',
+        'A fórmula clássica dos 6 meses já não se aplica a todos. Veja como calcular o seu número real.',
+        'Planejamento',
         'André Lima'
       ),
     ],
@@ -149,6 +221,24 @@ function getPlaceholderPosts(tenant: TenantSlug) {
         'Indie',
         'Pedro Alves'
       ),
+      post(
+        'Os Jogos Indie que Surpreenderam a Gamescom 2026',
+        'Estúdios menores roubaram o show de AAAs bilionários. Aqui estão os 7 que você precisa acompanhar.',
+        'Indie',
+        'Pedro Alves'
+      ),
+      post(
+        'PlayStation 6 Confirmado: Tudo que Sabemos Sobre Preço, Data e Retrocompatibilidade',
+        'A Sony finalmente confirmou o que era rumor. A janela de lançamento muda tudo para o mercado.',
+        'Hardware',
+        'Pedro Alves'
+      ),
+      post(
+        'Os 5 RPGs Que Você Precisa Jogar Antes do Fim de 2026',
+        'De mundos abertos a histórias lineares, selecionamos os títulos que definem o gênero este ano.',
+        'Review',
+        'Pedro Alves'
+      ),
     ],
     esportes: [
       post(
@@ -172,6 +262,24 @@ function getPlaceholderPosts(tenant: TenantSlug) {
       post(
         'Dorival Convoca Seleção Para as Eliminatórias: Veja os 26 Nomes e as Novidades',
         'Três estreantes e o retorno de Neymar surpreendem a lista divulgada nesta tarde.',
+        'Seleção',
+        'Carlos Mendes'
+      ),
+      post(
+        'LeBron James Anuncia Aposentadoria aos 41 — Um Legado Que Vai Além das Estatísticas',
+        'Quatro títulos, dois times diferentes, 25 anos de carreira. O que fica além dos números.',
+        'NBA',
+        'Carlos Mendes'
+      ),
+      post(
+        'Olimpíadas 2028: Los Angeles Projeta 10 Ouros Para o Brasil — Metas Realistas ou Devaneio?',
+        'O COB apresentou seu plano de metas. Analisamos modalidade a modalidade.',
+        'Olimpíadas',
+        'Carlos Mendes'
+      ),
+      post(
+        'Neymar Volta à Seleção: Análise Física, Tática e o Que Esperar nas Eliminatórias',
+        'Três anos depois, o camisa 10 retorna em momento decisivo. Os dados dizem se ainda faz sentido.',
         'Seleção',
         'Carlos Mendes'
       ),
@@ -201,6 +309,24 @@ function getPlaceholderPosts(tenant: TenantSlug) {
         'Cinema',
         'Ana Beatriz Ramos'
       ),
+      post(
+        'Succession vs. The Bear: A Batalha Pelos Melhores Roteiros da Última Década',
+        'Dois pesos pesados do drama televisivo contemporâneo — mas apenas um define o zeitgeist.',
+        'Análise',
+        'Ana Beatriz Ramos'
+      ),
+      post(
+        'Os 10 Melhores Filmes de 2026 Até Agora, Segundo Nossa Curadoria',
+        'De Cannes a Sundance, passando por blockbusters inesperados. A lista que vai guiar seu streaming.',
+        'Cinema',
+        'Ana Beatriz Ramos'
+      ),
+      post(
+        'O Fim das Senhas: Como o Passkey Chegou ao Streaming e Por Que Você Deve Ativar',
+        'Netflix, Disney+, e Prime Video migraram para autenticação sem senha. Entenda o impacto na segurança.',
+        'Tecnologia',
+        'Ana Beatriz Ramos'
+      ),
     ],
     mobilidade: [
       post(
@@ -227,11 +353,36 @@ function getPlaceholderPosts(tenant: TenantSlug) {
         'Comparativo',
         'Felipe Torres'
       ),
+      post(
+        'Recarga em Casa: Guia Completo Para Instalar um Wallbox Sem Contratar Enganador',
+        'Potência, instalação elétrica, certificação e marcas confiáveis — tudo que você precisa saber.',
+        'Guia',
+        'Felipe Torres'
+      ),
+      post(
+        'Tesla Model 3 Highland Chega ao Brasil: Preço, Autonomia Real e Comparativo Local',
+        'Testamos 800 km com o novo modelo no calor de Goiânia. A autonomia real surpreende.',
+        'Teste Real',
+        'Felipe Torres'
+      ),
+      post(
+        'Carros Elétricos Usados: Como Avaliar a Saúde da Bateria Antes de Comprar',
+        'O mercado de EVs seminovos cresce 180% ao ano. O risco da bateria degradada é real — veja como testar.',
+        'Guia',
+        'Felipe Torres'
+      ),
     ],
   };
   return map[tenant];
 }
 
 function post(title: string, excerpt: string, category: string, author: string) {
-  return { title, excerpt, category, author, publishedAt: new Date('2026-08-18') };
+  const slug = title
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-');
+  return { title, excerpt, category, author, publishedAt: new Date('2026-08-18'), slug };
 }

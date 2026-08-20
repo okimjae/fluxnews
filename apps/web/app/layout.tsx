@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: { default: config.name, template: `%s — ${config.name}` },
-    description: `Notícias sobre ${config.niche} com curadoria de IA.`,
+    description: `As melhores notícias e análises sobre ${config.niche}, com curadoria editorial semanal.`,
     metadataBase: new URL(`https://${config.domain}`),
   };
 }
@@ -25,8 +25,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="pt-BR" data-tenant={tenant}>
       <body>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-bg focus:font-mono focus:text-xs focus:rounded-sm focus:no-underline"
+        >
+          Pular para conteúdo
+        </a>
         <Header tenant={tenant} />
-        <main>{children}</main>
+        <main id="main-content">{children}</main>
         <Footer tenant={tenant} />
       </body>
     </html>

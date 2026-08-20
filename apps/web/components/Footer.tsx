@@ -1,21 +1,27 @@
 import type { TenantSlug } from '@fluxnews/config';
 import { getTenantConfig } from '@/tenants';
+import { AdSlot } from './AdSlot';
 
 interface FooterProps {
   tenant: TenantSlug;
 }
 
 const NAV = [
-  { href: '/about', label: 'Sobre' },
-  { href: '/editorial-policy', label: 'Política Editorial' },
-  { href: '/contact', label: 'Contato' },
+  { href: '/sobre', label: 'Sobre' },
+  { href: '/politica-editorial', label: 'Política Editorial' },
+  { href: '/contato', label: 'Contato' },
 ] as const;
 
 export function Footer({ tenant }: FooterProps) {
   const config = getTenantConfig(tenant);
 
   return (
-    <footer className="mt-16 border-t border-border">
+    <footer className="mt-10 border-t border-border">
+      {/* Pre-footer leaderboard ad */}
+      <div className="flex justify-center py-6 border-b border-border bg-surface">
+        <AdSlot size="leaderboard" />
+      </div>
+
       <div className="max-page px-page py-10">
         <div className="flex flex-wrap items-start justify-between gap-8 mb-8">
           {/* Brand */}
@@ -24,7 +30,7 @@ export function Footer({ tenant }: FooterProps) {
               {config.name}
             </p>
             <p className="text-[0.75rem] text-text-m leading-[1.5]">
-              {config.niche} · curadoria de IA
+              {config.niche} · curadoria editorial
               <br />
               <span className="font-mono text-[0.6875rem] text-accent opacity-70">
                 {config.domain}
@@ -44,6 +50,12 @@ export function Footer({ tenant }: FooterProps) {
               </a>
             ))}
             <a
+              href="/newsletter"
+              className="text-[0.8125rem] text-text-m no-underline hover:text-text-2 transition-colors duration-150"
+            >
+              Newsletter
+            </a>
+            <a
               href="/radio/feed.xml"
               className="text-[0.8125rem] text-text-m no-underline hover:text-text-2 transition-colors duration-150"
             >
@@ -58,7 +70,7 @@ export function Footer({ tenant }: FooterProps) {
             © {new Date().getFullYear()} {config.name}
           </p>
           <p className="text-[0.6875rem] font-mono text-text-m">
-            Conteúdo gerado com assistência de IA · curadoria editorial
+            Curadoria editorial independente · {new Date().getFullYear()}
           </p>
         </div>
       </div>

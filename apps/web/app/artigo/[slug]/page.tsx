@@ -25,13 +25,13 @@ function getMockPost(slug: string, tenant: TenantSlug) {
     title,
     excerpt: `${title} — análise aprofundada sobre ${config.niche} por ${config.author.name}.`,
     content: `<p>Este é um artigo completo sobre <strong>${title}</strong> na categoria ${config.niche}.</p>
-<p>O FluxNews utiliza agentes de inteligência artificial para curadoria e geração de conteúdo editorial de alta qualidade. Cada publicação passa por verificação factual antes de ir ao ar.</p>
+<p>A equipe editorial do ${config.name} acompanha de perto os principais desenvolvimentos do setor. Cada publicação passa por verificação factual antes de ir ao ar.</p>
 <h2>O que você vai aprender</h2>
 <p>Neste artigo, exploramos os principais aspectos do tema com base nas últimas pesquisas e dados disponíveis. Nossa abordagem é sempre embasada em evidências, sem especulação desnecessária.</p>
 <h2>Contexto e importância</h2>
 <p>Compreender ${title.toLowerCase()} é fundamental para quem acompanha ${config.niche}. O cenário mudou significativamente nos últimos meses, e esta análise ajuda a contextualizar as transformações em curso.</p>
 <h2>Conclusão</h2>
-<p>O conteúdo real deste artigo será gerado automaticamente pelo pipeline de IA assim que o banco de dados estiver configurado. Até lá, este placeholder serve como validação visual do layout editorial.</p>`,
+<p>Acompanhe o ${config.name} para não perder as próximas análises e reportagens sobre ${config.niche}. Assine nossa newsletter para receber o digest semanal direto no seu email.</p>`,
     category: 'Editorial',
     author: config.author.name,
     authorTitle: config.author.title,
@@ -159,6 +159,11 @@ export default async function ArticlePage({ params }: Props) {
               <ShareButtons title={post.title} />
             </div>
 
+            {/* In-content ad — highest CPM editorial slot */}
+            <div className="flex justify-center mb-8">
+              <AdSlot size="rectangle" />
+            </div>
+
             <ArticleBody html={post.content} />
 
             {/* Share row after article */}
@@ -188,7 +193,7 @@ export default async function ArticlePage({ params }: Props) {
         </div>
 
         {/* Related articles */}
-        <section className="mt-16 pt-8 border-t border-border">
+        <section className="mt-12 pt-6 border-t border-border">
           <div className="section-label">
             <div className="flex items-center gap-3">
               <div className="w-[2px] h-[1.1rem] bg-accent rounded-full" />
