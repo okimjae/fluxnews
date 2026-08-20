@@ -4,9 +4,10 @@ import { Fragment } from 'react';
 import { AdSlot } from '@/components/AdSlot';
 import { ArticleCard } from '@/components/ArticleCard';
 import { SidebarMostRead } from '@/components/SidebarMostRead';
+import { getPostsByCategory } from '@/lib/queries';
 import { getTenantConfig } from '@/tenants';
 
-export const revalidate = 3600;
+export const revalidate = 1800;
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -16,39 +17,22 @@ function slugToLabel(slug: string) {
   return slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-function getMockArticles(category: string, tenant: TenantSlug) {
-  const config = getTenantConfig(tenant);
-  const label = slugToLabel(category);
-
-  return Array.from({ length: 9 }, (_, i) => ({
-    title: `${label}: Artigo ${i + 1} — Análise e perspectivas para ${config.niche}`,
-    excerpt: `Análise editorial de ${config.author.name}. Uma visão aprofundada sobre ${config.niche} e os temas que moldam o mercado.`,
-    category: label,
-    author: config.author.name,
-    publishedAt: new Date(2026, 7, 18 - i),
-    slug: `${category}-artigo-${i + 1}`,
-  }));
-}
-
-export async function generateStaticParams() {
-  return [
-    { slug: 'mercado' },
-    { slug: 'analise' },
-    { slug: 'editorial' },
-    { slug: 'pesquisa' },
-    { slug: 'review' },
-    { slug: 'tendencias' },
-    { slug: 'todos' },
-  ];
-}
-
 export default async function CategoryPage({ params }: Props) {
   const { slug } = await params;
   const hdrs = await headers();
   const tenant = (hdrs.get('x-tenant') ?? 'cripto') as TenantSlug;
   const config = getTenantConfig(tenant);
   const label = slugToLabel(slug);
-  const articles = getMockArticles(slug, tenant);
+
+  const dbPosts = await getPostsByCategory(tenant, slug, 24);
+  const articles = dbPosts.map((p) => ({
+    title: p.title,
+    excerpt: p.excerpt || p.content.slice(0, 160).replace(/<[^>]*>/g, ''),
+    category: p.category || 'Editorial',
+    author: p.author || config.author.name,
+    publishedAt: p.publishedAt ?? p.createdAt,
+    slug: p.slug,
+  }));
 
   // First 6 go into the main grid, sidebar uses all for "most read"
   const mainArticles = articles.slice(0, 6);
