@@ -1,0 +1,87 @@
+name: Daily Content Pipeline
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # 06:00 UTC = 03:00 BRT
+  workflow_dispatch:
+    inputs:
+      tenant:
+        description: 'Run for a specific tenant (empty = all)'
+        required: false
+        default: ''
+      step:
+        description: 'Run a single step (empty = all)'
+        required: false
+        default: ''
+        type: choice
+        options:
+          - ''
+          - rss
+          - newsapi
+          - generate
+          - seo
+          - telegram
+          - newsletter
+
+jobs:
+  pipeline:
+    name: Content Pipeline
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL:         ${{ secrets.DATABASE_URL }}
+      GROQ_API_KEY:         ${{ secrets.GROQ_API_KEY }}
+      GEMINI_API_KEY:       ${{ secrets.GEMINI_API_KEY }}
+      NEWSAPI_KEY:          ${{ secrets.NEWSAPI_KEY }}
+      RESEND_API_KEY:       ${{ secrets.RESEND_API_KEY }}
+      TELEGRAM_BOT_TOKEN_CRIPTO:      ${{ secrets.TELEGRAM_BOT_TOKEN_CRIPTO }}
+      TELEGRAM_BOT_TOKEN_SAUDE:       ${{ secrets.TELEGRAM_BOT_TOKEN_SAUDE }}
+      TELEGRAM_BOT_TOKEN_TECH:        ${{ secrets.TELEGRAM_BOT_TOKEN_TECH }}
+      TELEGRAM_BOT_TOKEN_FINANCAS:    ${{ secrets.TELEGRAM_BOT_TOKEN_FINANCAS }}
+      TELEGRAM_BOT_TOKEN_GAMES:       ${{ secrets.TELEGRAM_BOT_TOKEN_GAMES }}
+      TELEGRAM_BOT_TOKEN_ESPORTES:    ${{ secrets.TELEGRAM_BOT_TOKEN_ESPORTES }}
+      TELEGRAM_BOT_TOKEN_STREAMING:   ${{ secrets.TELEGRAM_BOT_TOKEN_STREAMING }}
+      TELEGRAM_BOT_TOKEN_MOBILIDADE:  ${{ secrets.TELEGRAM_BOT_TOKEN_MOBILIDADE }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Install Python dependencies
+        run: uv pip install --system -r agents/pyproject.toml
+        working-directory: .
+
+      - name: 1 — RSS Fetcher
+        if: ${{ inputs.step == '' || inputs.step == 'rss' }}
+        run: python agents/rss_fetcher.py ${{ inputs.tenant && format('--tenant={0}', inputs.tenant) || '' }}
+
+      - name: 2 — NewsAPI Fetcher
+        if: ${{ inputs.step == '' || inputs.step == 'newsapi' }}
+        run: python agents/newsapi_fetcher.py ${{ inputs.tenant && format('--tenant={0}', inputs.tenant) || '' }}
+
+      - name: 3 — AI Content Generator
+        if: ${{ inputs.step == '' || inputs.step == 'generate' }}
+        run: python agents/content_generator.py --limit=20 ${{ inputs.tenant && format('--tenant={0}', inputs.tenant) || '' }}
+
+      - name: 4 — SEO Scorer
+        if: ${{ inputs.step == '' || inputs.step == 'seo' }}
+        run: python agents/seo_scorer.py ${{ inputs.tenant && format('--tenant={0}', inputs.tenant) || '' }}
+
+      - name: 5 — Telegram Publisher
+        if: ${{ inputs.step == '' || inputs.step == 'telegram' }}
+        run: python agents/telegram_publisher.py --limit=3 ${{ inputs.tenant && format('--tenant={0}', inputs.tenant) || '' }}
+
+      - name: 6 — Newsletter Sender (Mondays only / manual override)
+        if: ${{ inputs.step == '' || inputs.step == 'newsletter' }}
+        run: |
+          TENANT_FLAG="${{ inputs.tenant && format('--tenant={0}', inputs.tenant) || '' }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "$(date +%u)" = "1" ]; then
+            python agents/newsletter_sender.py $TENANT_FLAG
+          else
+            echo "Not Monday — newsletter skipped. Use workflow_dispatch to force."
+          fi
