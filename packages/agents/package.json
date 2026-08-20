@@ -6,6 +6,7 @@
   "scripts": {
     "rss": "tsx src/rss-fetcher.ts",
     "newsapi": "tsx src/newsapi-fetcher.ts",
+    "generate": "tsx src/content-generator.ts",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
